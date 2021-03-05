@@ -10,8 +10,6 @@ Square::Square(bool isShip, string identifier, string shipType) {
   this->shipType = shipType;
 }
 
-// Square::Square() {}; // dummy constructor
-
 string Square::getIdentifier() {
   return this->identifier;
 }

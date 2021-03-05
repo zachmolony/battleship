@@ -6,14 +6,29 @@
 using namespace std;
 
 Ocean::Ocean(int oceanWidth, int oceanHeight) {
+  this->oceanWidth = oceanWidth;
+  this->oceanHeight = oceanHeight;
   this->oceanGrid = getGrid(oceanWidth, oceanHeight);
 }
 
 void Ocean::showOcean() {
-  cout << oceanHeight << oceanWidth;
-  for (int x = 0; x < oceanWidth; x++) {
+  for (int x = 0; x < oceanWidth; x++) { // for each row, format
+    if (x == 0) {
+      cout << ' ' << ' ' << "|";
+    }
+    else if (x > 0 && x < 10) {
+      cout << " " << x << "|";
+    }
+    else {
+      cout << x << "|";
+    }
     for (int y = 0; y < oceanHeight; y++) {
-        cout << oceanGrid[x][y].getIdentifier(); // print current square
+      if (x == 0) {
+        cout << " " << char(65 + y) << ' ' << "|"; // todo: add ability for larger board
+      }
+      else {
+        cout << ' ' << oceanGrid[x][y].getIdentifier() << ' ' << "|";
+      }
     }
     cout << endl; // next row
   }
@@ -21,29 +36,26 @@ void Ocean::showOcean() {
 
 // Square Ocean::getGrid(int oceanWidth, int oceanHeight) {
 //   Square* grid = (Square*)malloc(sizeof(Square) * oceanWidth);
-
 //   for (int i = 0; i < oceanWidth; i++) {
 //     Square* row = (Square*)malloc(sizeof(Square) * oceanHeight);
-
 //     for (int j = 0; j < oceanHeight; j++) {
 //       // Square *thing = ;
 //       row[j] = Square(true, "^", "yeah"); // add a square to this item
 //     }
 //     grid[i] = *row; // add this row to the grid
 //   }
-
 //   return *grid;
 // }
 
 vector<vector<Square>> Ocean::getGrid(int oceanWidth, int oceanHeight) {
   vector<vector<Square>> grid;
 
-  grid.resize(oceanWidth);
   for (unsigned int i = 0; i < oceanWidth; i++) {
+    vector<Square> row;
     for (unsigned int j = 0; j < oceanHeight; j++) {
-      grid[i].resize(oceanHeight);
-      grid[i][j] = Square(); // add a square to this item
+      row.emplace_back(Square(true, "^", "Cruiser"));
     }
+    grid.push_back(row);
   }
 
   return grid;

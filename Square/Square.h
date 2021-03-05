@@ -19,8 +19,6 @@ public:
 
   string handleTorpedo();
 
-  Square(); // dummy constructor
-
   Square(bool isShip, string identifier, string shipType); // constructor
 
   string getIdentifier();
