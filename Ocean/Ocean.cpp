@@ -11,6 +11,8 @@ Ocean::Ocean(int oceanWidth, int oceanHeight) {
   this->oceanGrid = getGrid(oceanWidth, oceanHeight);
 }
 
+Ocean::Ocean() {};
+
 void Ocean::showOcean() {
   for (int x = 0; x < oceanWidth; x++) { // for each row, format
     if (x == 0) {
