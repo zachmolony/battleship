@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "../Square/Square.h"
+#include "../Ship/Ship.h"
 
 using namespace std;
 
@@ -21,7 +22,7 @@ public:
 
   vector<vector<Square>> getGrid(int oceanWidth, int oceanHeight);
 
-  bool placeShip(int x, int y, bool direction, int size, string identifier);
+  bool placeShip(int x, int y, bool direction, int size, string name, Ship &ship);
 
   void showOcean();
 

@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Ocean.h"
 #include "../Square/Square.h"
+#include "../Ship/Ship.h"
 
 using namespace std;
 
@@ -74,18 +75,19 @@ void Ocean::showOcean() {
 
 void Ocean::autoPlaceShips(vector<vector<string>> boats) {
   for (int i = 0; i < boats.size(); i++) { // for each boat
-    cout << "Placing " << boats[i][0] << endl;
+    Ship ship = Ship(stoi(boats[i][1]), boats[i][0]);
+    cout << "Placing " << ship.name << endl;
     bool placed = false;
     while (!placed) {
       bool horizontal = randomBool();
       int x = randomInt(this->oceanWidth);
       int y = randomInt(this->oceanHeight);
-      placed = placeShip(x, y, horizontal, stoi(boats[i][1]), boats[i][0]);
+      placed = placeShip(x, y, horizontal, ship.parts, ship.name, ship);
     }
   }
 }
 
-bool Ocean::placeShip(int x, int y, bool horizontal, int size, string name) {
+bool Ocean::placeShip(int x, int y, bool horizontal, int size, string name, Ship &ship) {
   if (horizontal) {
     if (x + size > oceanWidth + 1) { // check is not too far to the edge
       return false;
@@ -97,7 +99,7 @@ bool Ocean::placeShip(int x, int y, bool horizontal, int size, string name) {
     }
      // place the ship once we know the spots are free
     for (int remainingSquares = 0; remainingSquares < size; remainingSquares++) {
-      this->oceanGrid[x][y + remainingSquares].placeShip(name);
+      this->oceanGrid[x][y + remainingSquares].placeShip(name, ship);
     };
   } else { // same thing for horizontal
     if (x + size > oceanWidth + 1) {
@@ -109,7 +111,7 @@ bool Ocean::placeShip(int x, int y, bool horizontal, int size, string name) {
       }
     }
     for (int remainingSquares = 0; remainingSquares < size; remainingSquares++) {
-      this->oceanGrid[x + remainingSquares][y].placeShip(name);
+      this->oceanGrid[x + remainingSquares][y].placeShip(name, ship);
     };
   }
   return true;

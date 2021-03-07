@@ -1,6 +1,7 @@
 #include <vector>
 #include <string>
 #include "Square.h"
+#include "../Ship/Ship.h"
 
 using namespace std;
 
@@ -12,10 +13,11 @@ Square::Square(bool isShip, string identifier, string shipType) {
   this->shipType = shipType;
 }
 
-void Square::placeShip(string name) {
+void Square::placeShip(string name, Ship& ship) {
   this->isShip = true;
   this->identifier = name.at(0);
   this->shipType = name;
+  this->shipRef = ship;
 }
 
 string Square::getIdentifier() {
@@ -26,5 +28,6 @@ string Square::handleTorpedo() {
   if (this->isHit || !this->isShip) {
       return "MISS";
   }
+  this->shipRef.handleHit();
   return "HIT";
 }
