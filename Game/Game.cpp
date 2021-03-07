@@ -51,8 +51,8 @@ void Game::readConfigData() {
       if (splitLine[0] == "Board") {
         string str = removeWhitespace(splitLine[1]);
         vector<string> coords = split(str, 'x'); // get coords
-        this->oceanWidth = stoi(coords[0]);
-        this->oceanHeight = stoi(coords[1]);
+        this->oceanHeight = stoi(coords[0]);
+        this->oceanWidth = stoi(coords[1]);
       }
       if (splitLine[0] == "Boat") {
         string str = removeWhitespace(splitLine[1]);
@@ -66,7 +66,7 @@ void Game::readConfigData() {
 
 void Game::initialiseBoard() {
   this->theOcean = Ocean(this->oceanWidth, this->oceanHeight);
-  this->theOcean.placeShips(this->boats);
+  this->theOcean.autoPlaceShips(this->boats);
 }
 
 void Game::showOcean() {

@@ -12,16 +12,17 @@ class Square {
 private:
 
 public:
-  bool isShip;
-  bool isHit;
-  string identifier = "^";
+  bool isShip = false;
+  bool isHit = false;
+  string identifier = "-";
   string shipType;
 
-  string handleTorpedo();
-
+  Square();
   Square(bool isShip, string identifier, string shipType); // constructor
 
+  void placeShip(string name);
   string getIdentifier();
+  string handleTorpedo();
 };
 
 #endif // ADASHIP_SQUARE_H

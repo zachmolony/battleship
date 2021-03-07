@@ -5,35 +5,21 @@
 
 using namespace std;
 
-Ocean::Ocean(int oceanWidth, int oceanHeight) {
-  this->oceanWidth = oceanWidth;
-  this->oceanHeight = oceanHeight;
-  this->oceanGrid = getGrid(oceanWidth, oceanHeight);
+bool randomBool() { // not a very balanced random implementation but for this use i dont really care
+  return 0 + (rand() % (1 - 0 + 1)) == 1;
+}
+
+int randomInt(int max) {
+  srand((unsigned)time(0));
+  return (rand() % max) + 1; 
 }
 
 Ocean::Ocean() {};
 
-void Ocean::showOcean() {
-  for (int x = 0; x < oceanWidth; x++) { // for each row, format
-    if (x == 0) {
-      cout << ' ' << ' ' << "|";
-    }
-    else if (x > 0 && x < 10) {
-      cout << " " << x << "|";
-    }
-    else {
-      cout << x << "|";
-    }
-    for (int y = 0; y < oceanHeight; y++) {
-      if (x == 0) {
-        cout << " " << char(65 + y) << ' ' << "|"; // todo: add ability for larger board
-      }
-      else {
-        cout << ' ' << oceanGrid[x][y].getIdentifier() << ' ' << "|";
-      }
-    }
-    cout << endl; // next row
-  }
+Ocean::Ocean(int oceanWidth, int oceanHeight) {
+  this->oceanWidth = oceanWidth;
+  this->oceanHeight = oceanHeight;
+  this->oceanGrid = getGrid(oceanWidth, oceanHeight);
 }
 
 // Square Ocean::getGrid(int oceanWidth, int oceanHeight) {
@@ -52,13 +38,79 @@ void Ocean::showOcean() {
 vector<vector<Square>> Ocean::getGrid(int oceanWidth, int oceanHeight) {
   vector<vector<Square>> grid;
 
-  for (unsigned int i = 0; i < oceanWidth; i++) {
+  for (unsigned int i = 0; i < oceanWidth + 1; i++) {
     vector<Square> row;
-    for (unsigned int j = 0; j < oceanHeight; j++) {
-      row.emplace_back(Square(true, "^", "Cruiser"));
+    for (unsigned int j = 0; j < oceanHeight + 1; j++) {
+      row.emplace_back(Square());
     }
     grid.push_back(row);
   }
 
   return grid;
 }
+
+void Ocean::showOcean() {
+  for (int x = 0; x < oceanWidth + 1; x++) { // for each row, format
+    if (x == 0) {
+      cout << ' ' << ' ' << "|";
+    }
+    else if (x > 0 && x < 10) {
+      cout << " " << x << "|";
+    }
+    else {
+      cout << x << "|";
+    }
+    for (int y = 0; y < oceanHeight + 1; y++) {
+      if (x == 0) {
+        cout << " " << char(65 + y) << ' ' << "|"; // todo: add ability for larger board
+      }
+      else {
+        cout << ' ' << oceanGrid[x][y].getIdentifier() << ' ' << "|";
+      }
+    }
+    cout << endl; // next row
+  }
+}
+
+void Ocean::autoPlaceShips(vector<vector<string>> boats) {
+  for (int i = 0; i < boats.size(); i++) { // for each boat
+    cout << "Placing " << boats[i][0] << endl;
+    bool placed = false;
+    while (!placed) {
+      bool horizontal = randomBool();
+      int x = randomInt(this->oceanWidth);
+      int y = randomInt(this->oceanHeight);
+      placed = placeShip(x, y, horizontal, stoi(boats[i][1]), boats[i][0]);
+    }
+  }
+}
+
+bool Ocean::placeShip(int x, int y, bool horizontal, int size, string name) {
+  if (horizontal) {
+    if (x + size > oceanWidth + 1) { // check is not too far to the edge
+      return false;
+    }
+    for (int squarecount = 0; squarecount < size; squarecount++) { // for the length of the ship
+      if (this->oceanGrid[x][y + squarecount].isShip) { // check no ship exists on that square
+        return false;
+      }
+    }
+     // place the ship once we know the spots are free
+    for (int remainingSquares = 0; remainingSquares < size; remainingSquares++) {
+      this->oceanGrid[x][y + remainingSquares].placeShip(name);
+    };
+  } else { // same thing for horizontal
+    if (x + size > oceanWidth + 1) {
+      return false;
+    }
+    for (int squarecount = 0; squarecount < size; squarecount++) { 
+      if (this->oceanGrid[x + squarecount][y].isShip) {
+        return false;
+      }
+    }
+    for (int remainingSquares = 0; remainingSquares < size; remainingSquares++) {
+      this->oceanGrid[x + remainingSquares][y].placeShip(name);
+    };
+  }
+  return true;
+};

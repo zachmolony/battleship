@@ -16,14 +16,16 @@ public:
   int oceanWidth;
   vector<vector<Square>> oceanGrid;
 
-
   Ocean(); // dummy constructor
   Ocean(int oceanWidth, int oceanHeight); // Constructor that takes the ocean dimensions.
 
-
   vector<vector<Square>> getGrid(int oceanWidth, int oceanHeight);
+
+  bool placeShip(int x, int y, bool direction, int size, string identifier);
+
   void showOcean();
-  void placeShips(vector<vector<string>> boats);
+
+  void autoPlaceShips(vector<vector<string>> boats);
 };
 
 #endif // ADASHIP_OCEAN_H
