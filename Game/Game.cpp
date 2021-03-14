@@ -1,38 +1,30 @@
 #include <vector>
 #include <string>
-#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <iterator>
 #include "Game.h"
-#include "../Ocean/Ocean.h"
+#include "../Player/Player.h"
+#include "../Helper/Helper.h"
 
 using namespace std;
-
-vector<string> split(string toSplit, char delimiter) {
-    stringstream ss(toSplit);
-    string item;
-    vector<string> separated;
-    while (getline(ss, item, delimiter)) {
-       separated.push_back(item);
-    }
-    return separated;
-}
-
-string removeWhitespace(string str) {
-  string::iterator end_pos = remove(str.begin(), str.end(), ' '); // remove whitespace
-  str.erase(end_pos, str.end());
-  return str;
-}
-
-
-
 
 
 Game::Game() {
   Game::readConfigData();
-  Game::initialiseBoard();
-  Game::showOcean();
+  int thing = Game::menu();
+  switch (thing) {
+    case 0:
+      exit(1);
+    case 1:
+      this->players.push_back(Player(false, "Zach"));
+      this->players[0].theOcean = Ocean(this->oceanWidth, this->oceanHeight);
+      this->players.push_back(Player(true, "CPU"));
+      this->players[1].theOcean = Ocean(this->oceanWidth, this->oceanHeight);
+      Game::startGame();
+      // PlayerinitGame();
+      break;
+  }
 };
 
 void Game::readConfigData() {
@@ -51,7 +43,7 @@ void Game::readConfigData() {
       if (splitLine[0] == "Board") {
         string str = removeWhitespace(splitLine[1]);
         vector<string> coords = split(str, 'x'); // get coords
-        this->oceanHeight = stoi(coords[0]);
+        this->oceanHeight = stoi(coords[0]); // todo struct
         this->oceanWidth = stoi(coords[1]);
       }
       if (splitLine[0] == "Boat") {
@@ -64,11 +56,53 @@ void Game::readConfigData() {
   file.close();
 };
 
-void Game::initialiseBoard() {
-  this->theOcean = Ocean(this->oceanWidth, this->oceanHeight);
-  this->theOcean.autoPlaceShips(this->boats);
+int Game::menu() {
+  cout << setfill('*') << setw(40) << endl;
+  cout << setw(3) << '*' << ' ' << setw(4) << ' ';
+  cout << "Choose a game mode: " << endl;
+  // cout << ' ' << setw(13) << ' ' << setw(26) << '*' << endl;
+
+  cout << setw(3) << '*' << ' ' << setfill(' ') << setw(4) << ' ';
+  cout << "1: Player vs CPU " << endl;
+  // cout << setfill(' ') << setw(31) << ' ' << setfill('*') << setw(4) << ' ' << endl;
+
+  cout << setw(3) << '*' << ' ' << setfill(' ') << setw(4) << ' ';
+  cout << "2: Player vs Player " << endl;
+  // cout << setfill(' ') << setw(30) << ' ' << setfill('*') << setw(4) << ' ' << endl;
+
+  cout << setw(3) << '*' << ' ' << setfill(' ') << setw(4) << ' ';
+  cout << "3: Player vs CPU (Salvo)" << endl;
+  // cout << setfill(' ') << setw(40) << ' ' << setfill('*') << setw(4) << ' ' << endl;
+
+  cout << setw(3) << '*' << ' ' << setfill(' ') << setw(4) << ' ';
+  cout << "4: Player vs Player (Salvo)" << endl;
+  // cout << setfill(' ') << setw(37) << ' ' << setfill('*') << setw(4) << ' ' << endl;
+
+  cout << setw(3) << '*' << ' ' << setfill(' ') << setw(4) << ' ';
+  cout << "5: Player vs CPU (Hidden Mines)" << endl;
+  // cout << setfill(' ') << setw(34) << ' ' << setfill('*') << setw(4) << ' ' << endl;
+
+  cout << setw(3) << '*' << ' ' << setfill(' ') << setw(4) << ' ';
+  cout << "6: Player vs Player (Hidden Mines)" << endl;
+  // cout << setfill(' ') << setw(30) << ' ' << setfill('*') << setw(4) << ' ' << endl;
+
+  cout << setw(3) << '*' << ' ' << setfill(' ') << setw(4) << ' ';
+  cout << "7: CPU vs CPU (Hidden Mines)" << endl;
+  // cout << setfill(' ') << setw(31) << ' ' << setfill('*') << setw(4) << ' ' << endl;
+
+  cout << setw(3) << '*' << ' ' << setfill(' ') << setw(4) << ' ';
+  cout << "0: Quit " << endl;
+  // cout << setfill(' ') << setw(31) << ' ' << setfill('*') << setw(4) << ' ' << endl;
+  return 1;
 }
 
-void Game::showOcean() {
-  this->theOcean.showOcean();
-};
+void Game::startGame() {
+  for (int x = 0; x < this->players.size(); x++) {
+    this->players[x].placeShips(this->boats);
+  }
+  while (true) {
+    for (int x = 0; x < this->players.size(); x++) {
+      this->players[x].takeTurn();
+    }
+  }
+}

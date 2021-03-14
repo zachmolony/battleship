@@ -3,9 +3,9 @@
 
 #include <vector>
 #include "../Ocean/Ocean.h"
+#include "../Player/Player.h"
 
 using namespace std;
-
 
 class Game {
 
@@ -16,15 +16,13 @@ public:
   int oceanWidth;
   int score[2] = {0, 0};
   vector<vector<string>> boats;
-
-  Ocean theOcean;
+  vector<Player> players;
 
   Game(); // Constructor that takes the ocean dimensions.
 
+  int menu();
+  void startGame();
   void readConfigData();
-  void initialiseBoard();
-
-  void showOcean();
 };
 
 #endif // ADASHIP_GAME_H
