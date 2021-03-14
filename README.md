@@ -23,3 +23,7 @@ A CPU player needs to be created using an auto-placing feature. The boards will 
 - e. Initial object-oriented design ideas and plan of phased breakdown into smaller tasks (linked to 1d).
 
 ## Development Approach
+
+## Running the project
+
+`g++ -pthread -std=c++17 main.cpp "Game/Game.cpp" "Ocean/Ocean.cpp" "Square/Square.cpp" "Ship/Ship.cpp" "Player/Player.cpp" && ./a.out`
