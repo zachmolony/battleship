@@ -6,6 +6,8 @@
 
 using namespace std;
 
+int getIndexFromLetter(string s);
+
 vector<string> split(string toSplit, char delimiter);
 
 string removeWhitespace(string str);

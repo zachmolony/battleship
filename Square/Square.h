@@ -23,7 +23,7 @@ public:
 
   void placeShip(string name, Ship& ship);
   string getIdentifier();
-  string handleTorpedo();
+  bool handleTorpedo();
 };
 
 #endif // ADASHIP_SQUARE_H

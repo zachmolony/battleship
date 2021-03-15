@@ -5,11 +5,28 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <cctype>
 
 using namespace std;
 
 long maximum = std::numeric_limits<std::streamsize>::max();
 long minimum = std::numeric_limits<std::streamsize>::min();
+
+int getIndexFromLetter(string s) {
+  char char_array[s.length() + 1]; // declaring character array
+  strcpy(char_array, s.c_str()); // copy the contents of the string to char array
+
+  int i = 0;
+  while (char_array[i]) {
+    putchar(toupper(char_array[i]));
+    i++;
+  }
+  if (s.length() == 1) {
+    return char_array[i] & 31;
+  } else {
+    return char_array[0];
+  }
+}
 
 vector<string> split(string toSplit, char delimiter) {
   stringstream ss(toSplit);
@@ -34,7 +51,7 @@ string getInput(string prompt, const string regex = "") {
     getline(cin, answer);
   } while (answer.empty());
 
-  while(!regex.empty()){
+  while(!regex.empty()) {
     std::regex re(regex);
     getline(cin, answer);
     if(!std::regex_match(answer, re)){

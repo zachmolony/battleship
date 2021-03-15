@@ -27,6 +27,8 @@ public:
   void showOcean();
 
   void autoPlaceShips(vector<vector<string>> boats);
+
+  bool checkHit(vector<string>);
 };
 
 #endif // ADASHIP_OCEAN_H

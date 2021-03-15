@@ -3,6 +3,7 @@
 #include "Ocean.h"
 #include "../Square/Square.h"
 #include "../Ship/Ship.h"
+#include "../Helper/Helper.h"
 
 using namespace std;
 
@@ -116,3 +117,10 @@ bool Ocean::placeShip(int x, int y, bool horizontal, int size, string name, Ship
   }
   return true;
 };
+
+bool Ocean::checkHit(vector<string> coords) {
+  int x = getIndexFromLetter(coords[0]);
+  int y = stoi(coords[1]);
+  cout << 65 - x << y << endl;
+  return true;
+}

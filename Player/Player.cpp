@@ -1,5 +1,6 @@
 #include <string>
 #include <iostream>
+#include <vector>
 #include "../Player/Player.h"
 #include "../Ship/Ship.h"
 #include "../Ocean/Ocean.h"
@@ -18,6 +19,9 @@ void Player::showOcean() {
 };
 
 void Player::placeShips(vector<vector<string>> ships) {
+  this->theOcean.autoPlaceShips(ships);
+  Player::showOcean();
+  return;
   if (this->isComputer) {
     this->theOcean.autoPlaceShips(ships);
     return;
@@ -29,6 +33,10 @@ void Player::placeShips(vector<vector<string>> ships) {
 }
 
 void Player::takeTurn() {
-  string input = getInput("Where do you want to fire Captain? (x,y): ", "[0-9]+,[a-zA-Z]+");
-  input
+  string input = getInput("Where do you want to fire Captain? (x,y): ", "[a-zA-Z]+,[0-9]+");
+  vector<string> coords = split(input, ',');
+  
+  if (this->theOcean.checkHit(coords)) {
+    cout << "Direct Hit, good shot caprain";
+  }
 }

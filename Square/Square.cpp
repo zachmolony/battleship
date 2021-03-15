@@ -24,10 +24,10 @@ string Square::getIdentifier() {
   return this->identifier;
 }
 
-string Square::handleTorpedo() {
+bool Square::handleTorpedo() {
   if (this->isHit || !this->isShip) {
-      return "MISS";
+      return false;
   }
   this->shipRef.handleHit();
-  return "HIT";
+  return true;
 }
