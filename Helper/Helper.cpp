@@ -13,19 +13,16 @@ long maximum = std::numeric_limits<std::streamsize>::max();
 long minimum = std::numeric_limits<std::streamsize>::min();
 
 int getIndexFromLetter(string s) {
-  char char_array[s.length() + 1]; // declaring character array
-  strcpy(char_array, s.c_str()); // copy the contents of the string to char array
+  transform(s.begin(), s.end(),s.begin(), ::toupper); // to uppercase
 
-  int i = 0;
-  while (char_array[i]) {
-    putchar(toupper(char_array[i]));
-    i++;
+  char* char_array; // convert to char array via pointer
+  char_array = &s[0];
+
+  if (strlen(char_array) == 1) { // for single letters return position via ascii
+    return (char_array[0] - 'A');
   }
-  if (s.length() == 1) {
-    return char_array[i] & 31;
-  } else {
-    return char_array[0];
-  }
+  string firstLetter(1, char_array[0]); // for larger coords use recursion
+  return (getIndexFromLetter(firstLetter) * 26) + (char_array[1] - 'A' + 1);
 }
 
 vector<string> split(string toSplit, char delimiter) {

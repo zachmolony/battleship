@@ -32,11 +32,10 @@ void Player::placeShips(vector<vector<string>> ships) {
   }
 }
 
-void Player::takeTurn() {
-  string input = getInput("Where do you want to fire Captain? (x,y): ", "[a-zA-Z]+,[0-9]+");
-  vector<string> coords = split(input, ',');
-  
-  if (this->theOcean.checkHit(coords)) {
-    cout << "Direct Hit, good shot caprain";
-  }
-}
+// void Player::checkHit(coords) {
+//   if (this->theOcean.checkHit(coords)) {
+//     cout << "Direct hit! Good shot Captain. " << endl;
+//   } else {
+//     cout << "That was a miss Captain, adjust your fire. " << endl;
+//   }
+// }

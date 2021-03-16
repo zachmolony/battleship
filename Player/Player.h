@@ -19,7 +19,6 @@ class Player {
     void initGame();
     void placeShips(vector<vector<string>> ships);
     void showOcean();
-    void takeTurn();
 };
 
 #endif // ADASHIP_PLAYER_H

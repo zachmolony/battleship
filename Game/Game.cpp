@@ -20,8 +20,8 @@ Game::Game() {
     case 1:
       this->players.push_back(Player(false, "Zach"));
       this->players[0].theOcean = Ocean(this->oceanWidth, this->oceanHeight);
-      this->players.push_back(Player(true, "CPU"));
-      this->players[1].theOcean = Ocean(this->oceanWidth, this->oceanHeight);
+      // this->players.push_back(Player(true, "CPU"));
+      // this->players[1].theOcean = Ocean(this->oceanWidth, this->oceanHeight);
       Game::startGame();
       // PlayerinitGame();
       break;
@@ -102,8 +102,24 @@ void Game::startGame() {
     this->players[x].placeShips(this->boats);
   }
   while (true) {
-    for (int x = 0; x < this->players.size(); x++) {
-      this->players[x].takeTurn();
+    for (int p = 0; p < this->players.size(); p++) {
+      string input = getInput("Where do you want to fire? (x,y): ", "[a-zA-Z]+,[0-9]+");
+      vector<string> coords = split(input, ',');  
+      
+      int y = getIndexFromLetter(coords[0]);
+      int x = stoi(coords[1]);
+
+      cout << "Your shot: " << x << y << endl;
+
+      if (this->players[p].theOcean.oceanGrid[x][y].isShip) {
+        this->players[p].theOcean.oceanGrid[x][y].identifier = "*";
+        this->players[p].theOcean.showOcean();
+        cout << "Direct hit! Good shot Captain. " << endl;
+      } else {
+        this->players[p].theOcean.oceanGrid[x][y].identifier = "-";
+        this->players[p].theOcean.showOcean();
+        cout << "That was a miss Captain, adjust your fire. " << endl;
+      }
     }
   }
 }
