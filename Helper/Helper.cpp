@@ -9,8 +9,8 @@
 
 using namespace std;
 
-long maximum = std::numeric_limits<std::streamsize>::max();
-long minimum = std::numeric_limits<std::streamsize>::min();
+long maximum = numeric_limits<streamsize>::max();
+long minimum = numeric_limits<streamsize>::min();
 
 int getIndexFromLetter(string s) {
   transform(s.begin(), s.end(),s.begin(), ::toupper); // to uppercase
@@ -43,16 +43,17 @@ string removeWhitespace(string str) {
 
 string getInput(string prompt, const string regex = "") {
   string answer;
-  do {
-    cout << prompt;
-    getline(cin, answer);
-  } while (answer.empty());
+  cout << prompt;
+  cin >> answer;
 
   while(!regex.empty()) {
     std::regex re(regex);
-    getline(cin, answer);
+
     if(!std::regex_match(answer, re)){
-      cout << "Invalid value, please try again: ";
+      cin.clear();
+      cin.ignore(maximum, '\n');
+      cout << "Incorrect input, try again: ";
+      cin >> answer;
       continue;
     }
     return answer;
