@@ -12,9 +12,10 @@ Ship::Ship(int length, string shipType) {
 };
 
 void Ship::handleHit() {
-  this->parts -= 1;
-  if (this->parts == 0) {
-    this->isDestroyed = true;
+  cout << name << " has been hit Captain! Only " << parts << " parts remaining!" << endl;
+  parts--;
+  if (parts == 0) {
+    isDestroyed = true;
   }
-  cout << this->name << " has been hit Captain! Only " << this->parts << " parts remaining!" << endl;
+  cout << name << " has been hit Captain! Only " << this->parts << " parts remaining!" << endl;
 }

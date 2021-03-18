@@ -37,12 +37,13 @@ void Player::autoPlaceShips(vector<vector<string>> boats) {
     Ship ship = Ship(stoi(boats[i][1]), boats[i][0]);
     this->ships.push_back(ship);
     cout << "Placing " << ship.name << endl;
-    bool placed = false;
 
+    bool placed = false;
     while (!placed) {
       bool horizontal = randomBool();
       int x = randomInt(this->theOcean.oceanWidth);
       int y = randomInt(this->theOcean.oceanHeight);
+      placed = this->theOcean.placeShip(x, y, horizontal, ship.parts, ship.name, &ship);
     }
   }
 }

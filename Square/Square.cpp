@@ -1,5 +1,6 @@
 #include <vector>
 #include <string>
+#include <iostream>
 #include "Square.h"
 #include "../Ship/Ship.h"
 
@@ -13,7 +14,7 @@ Square::Square(bool isShip, string identifier, string shipType) {
   this->shipType = shipType;
 }
 
-void Square::placeShip(string name, Ship& ship) {
+void Square::placeShip(string name, Ship* ship) {
   this->isShip = true;
   this->identifier = name.at(0);
   this->shipType = name;
@@ -26,8 +27,12 @@ string Square::getIdentifier() {
 
 bool Square::handleTorpedo() {
   if (this->isHit || !this->isShip) {
+      this->identifier = ".";
       return false;
   }
-  this->shipRef.handleHit();
+  // void (*ptrToHitHandler)();
+  this->identifier = "*";
+  this->shipRef->handleHit();
+  // ptrToHitHandler = shipRef.handleHit();
   return true;
 }

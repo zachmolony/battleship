@@ -78,7 +78,7 @@ void Ocean::showOcean() {
 //   }
 // }
 
-bool Ocean::placeShip(int x, int y, bool horizontal, int size, string name, Ship &ship) {
+bool Ocean::placeShip(int x, int y, bool horizontal, int size, string name, Ship* ship) {
   if (horizontal) {
     if (x + size > oceanWidth + 1) { // check is not too far to the edge
       return false;
@@ -109,13 +109,10 @@ bool Ocean::placeShip(int x, int y, bool horizontal, int size, string name, Ship
 };
 
 void Ocean::handleShot(int x, int y) {
-  if (oceanGrid[x][y].isShip) {
-    oceanGrid[x][y].identifier = "*";
-    oceanGrid[x][y].shipRef->handleHit();
+  if (oceanGrid[x][y].handleTorpedo()) {
     showOcean();
     cout << "Direct hit! Good shot Captain. " << endl;
   } else {
-    oceanGrid[x][y].identifier = ".";
     showOcean();
     cout << "That was a miss Captain, adjust your fire. " << endl;
   }

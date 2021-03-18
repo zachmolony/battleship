@@ -22,7 +22,7 @@ public:
 
   vector<vector<Square>> getGrid(int oceanWidth, int oceanHeight);
 
-  bool placeShip(int x, int y, bool direction, int size, string name, Ship &ship);
+  bool placeShip(int x, int y, bool direction, int size, string name, Ship* ship);
 
   void showOcean();
   void handleShot(int x, int y);

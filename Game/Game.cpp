@@ -13,18 +13,27 @@ using namespace std;
 
 Game::Game() {
   Game::readConfigData();
-  int thing = Game::menu();
-  switch (thing) {
+  switch (Game::menu()) {
     case 0:
       exit(1);
     case 1:
       this->players.push_back(Player(false, "Zach"));
       this->players[0].theOcean = Ocean(this->oceanWidth, this->oceanHeight);
-      // this->players.push_back(Player(true, "CPU"));
-      // this->players[1].theOcean = Ocean(this->oceanWidth, this->oceanHeight);
-      Game::startGame();
-      // PlayerinitGame();
+      this->players.push_back(Player(true, "CPU"));
+      this->players[1].theOcean = Ocean(this->oceanWidth, this->oceanHeight);
       break;
+    case 2:
+      break;
+    case 3:
+      break;
+    case 4:
+      break;
+    case 5:
+      break;
+    case 6:
+      break;
+    
+    Game::startGame();
   }
 };
 
@@ -94,7 +103,9 @@ int Game::menu() {
   cout << setw(3) << '*' << ' ' << setfill(' ') << setw(4) << ' ';
   cout << "0: Quit " << endl;
   // cout << setfill(' ') << setw(31) << ' ' << setfill('*') << setw(4) << ' ' << endl;
-  return 1;
+
+  // return 1;
+  return getIntegerInput(0, 7);
 }
 
 void Game::startGame() {

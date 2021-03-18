@@ -16,12 +16,12 @@ public:
   bool isHit = false;
   string identifier = "~";
   string shipType;
-  Ship shipRef;
+  Ship* shipRef;
 
   Square();
   Square(bool isShip, string identifier, string shipType); // constructor
 
-  void placeShip(string name, Ship& ship);
+  void placeShip(string name, Ship* ship);
   string getIdentifier();
   bool handleTorpedo();
 };
