@@ -6,6 +6,10 @@
 
 using namespace std;
 
+bool randomBool();
+
+int randomInt(int max);
+
 int getIndexFromLetter(string s);
 
 vector<string> split(string toSplit, char delimiter);

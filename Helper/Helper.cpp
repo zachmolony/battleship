@@ -12,6 +12,16 @@ using namespace std;
 long maximum = numeric_limits<streamsize>::max();
 long minimum = numeric_limits<streamsize>::min();
 
+
+bool randomBool() { // not a very balanced random implementation but for this use i dont really care
+  return 0 + (rand() % (1 - 0 + 1)) == 1;
+}
+
+int randomInt(int max) {
+  srand((unsigned)time(0));
+  return (rand() % max) + 1; 
+}
+
 int getIndexFromLetter(string s) {
   transform(s.begin(), s.end(),s.begin(), ::toupper); // to uppercase
 

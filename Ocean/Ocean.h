@@ -25,8 +25,7 @@ public:
   bool placeShip(int x, int y, bool direction, int size, string name, Ship &ship);
 
   void showOcean();
-
-  void autoPlaceShips(vector<vector<string>> boats);
+  void handleShot(int x, int y);
 };
 
 #endif // ADASHIP_OCEAN_H

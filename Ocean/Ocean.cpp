@@ -6,15 +6,6 @@
 
 using namespace std;
 
-bool randomBool() { // not a very balanced random implementation but for this use i dont really care
-  return 0 + (rand() % (1 - 0 + 1)) == 1;
-}
-
-int randomInt(int max) {
-  srand((unsigned)time(0));
-  return (rand() % max) + 1; 
-}
-
 Ocean::Ocean() {};
 
 Ocean::Ocean(int oceanWidth, int oceanHeight) {
@@ -73,19 +64,19 @@ void Ocean::showOcean() {
   }
 }
 
-void Ocean::autoPlaceShips(vector<vector<string>> boats) {
-  for (int i = 0; i < boats.size(); i++) { // for each boat
-    Ship ship = Ship(stoi(boats[i][1]), boats[i][0]);
-    cout << "Placing " << ship.name << endl;
-    bool placed = false;
-    while (!placed) {
-      bool horizontal = randomBool();
-      int x = randomInt(this->oceanWidth);
-      int y = randomInt(this->oceanHeight);
-      placed = placeShip(x, y, horizontal, ship.parts, ship.name, ship);
-    }
-  }
-}
+// void Ocean::autoPlaceShips(vector<vector<string>> boats) {
+//   for (int i = 0; i < boats.size(); i++) { // for each boat
+//     Ship ship = Ship(stoi(boats[i][1]), boats[i][0]);
+//     cout << "Placing " << ship.name << endl;
+//     bool placed = false;
+//     while (!placed) {
+//       bool horizontal = randomBool();
+//       int x = randomInt(this->oceanWidth);
+//       int y = randomInt(this->oceanHeight);
+//       placed = placeShip(x, y, horizontal, ship.parts, ship.name, ship);
+//     }
+//   }
+// }
 
 bool Ocean::placeShip(int x, int y, bool horizontal, int size, string name, Ship &ship) {
   if (horizontal) {
@@ -116,3 +107,16 @@ bool Ocean::placeShip(int x, int y, bool horizontal, int size, string name, Ship
   }
   return true;
 };
+
+void Ocean::handleShot(int x, int y) {
+  if (oceanGrid[x][y].isShip) {
+    oceanGrid[x][y].identifier = "*";
+    oceanGrid[x][y].shipRef->handleHit();
+    showOcean();
+    cout << "Direct hit! Good shot Captain. " << endl;
+  } else {
+    oceanGrid[x][y].identifier = ".";
+    showOcean();
+    cout << "That was a miss Captain, adjust your fire. " << endl;
+  }
+}

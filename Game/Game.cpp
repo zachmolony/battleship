@@ -103,6 +103,7 @@ void Game::startGame() {
   }
   while (true) {
     for (int p = 0; p < this->players.size(); p++) {
+      // get shot coordinates
       string input = getInput("Where do you want to fire? (x,y): ", "[a-zA-Z]+,[0-9]+");
       vector<string> coords = split(input, ',');  
       
@@ -111,15 +112,8 @@ void Game::startGame() {
 
       cout << "Your shot: " << x << y << endl;
 
-      if (this->players[p].theOcean.oceanGrid[x][y].isShip) {
-        this->players[p].theOcean.oceanGrid[x][y].identifier = "*";
-        this->players[p].theOcean.showOcean();
-        cout << "Direct hit! Good shot Captain. " << endl;
-      } else {
-        this->players[p].theOcean.oceanGrid[x][y].identifier = "-";
-        this->players[p].theOcean.showOcean();
-        cout << "That was a miss Captain, adjust your fire. " << endl;
-      }
+      // handle shot
+      this->players[p].theOcean.handleShot(x, y);
     }
   }
 }
