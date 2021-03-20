@@ -29,28 +29,39 @@ void Player::placeShips(vector<vector<string>> ships) {
     return;
   }
 
-  string autoplacing = getInput("Do you want to manually place ships? (y/n): ", "[YNyn]");
-  if (autoplacing == "n" || autoplacing == "N") {
-    autoPlaceShips(ships);
-    theOcean.showOcean();
-    return;
-  }
-
-  // todo manual ship placement
+  // manual ship placement
   for (int i = 0; i < ships.size(); i++) { // for each boat
+    string keepPlacing = getInput("Do you want to manually place remaining ships? (y/n): ", "[YNyn]");
+    if (keepPlacing == "n" || keepPlacing == "N") {
+      vector<vector<string>> remaining = vector<vector<string>>(ships.begin() + i, ships.end());
+      autoPlaceShips(remaining);
+      theOcean.showOcean();
+      return;
+    }
+
     Ship ship = Ship(stoi(ships[i][1]), ships[i][0]);
     this->ships.push_back(ship);
-    cout << "Placing " << ship.name << endl;
+    cout << "Placing " << ship.name << ". Length is " << ship.parts << endl;
 
     bool placed = false;
     while (!placed) {
-      bool horizontal = randomBool();
-      int x = getIntegerInput("", 1, this->theOcean.oceanWidth);
-      int y = getIntegerInput("", 1, this->theOcean.oceanHeight);
+      auto [x, y] = getValidCoords("Enter top right coordinate to place this ship: ");
+
+      cout << x << " " << y << endl;
+
+      bool horizontal = false;
+      string orientation = getInput("Enter horizontal or verical (h/v): ", "[HVhv]");
+      if (orientation == "H" || orientation == "h") {
+        horizontal = true;
+      };
+
       placed = this->theOcean.placeShip(x, y, horizontal, ship.parts, ship.name, &ship);
+      if (!placed) {
+        cout << "Placement failed. Try another coordinate." << endl; 
+      }
     }
+    theOcean.showOcean();
   }
-  theOcean.showOcean();
 }
 
 void Player::autoPlaceShips(vector<vector<string>> ships) {

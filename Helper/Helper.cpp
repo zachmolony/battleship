@@ -12,7 +12,6 @@ using namespace std;
 long maximum = numeric_limits<streamsize>::max();
 long minimum = numeric_limits<streamsize>::min();
 
-
 bool randomBool() { // not a very balanced random implementation but for this use i dont really care
   return 0 + (rand() % (1 - 0 + 1)) == 1;
 }
@@ -108,4 +107,10 @@ float getFloatInput(string prompt, long min = minimum, long max = maximum) {
     }
   }
   return number;
+}
+
+tuple<int, int> getValidCoords(string prompt) {
+  string input = getInput(prompt, "[a-zA-Z]+,[0-9]+"); // todo validation
+  vector<string> coords = split(input, ',');
+  return { stoi(coords[1]), getIndexFromLetter(coords[0]) };
 }

@@ -113,6 +113,7 @@ int Game::menu() {
 void Game::startGame() {
   cout << "Starting Game... " << endl << endl;
   for (int x = 0; x < this->players.size(); x++) {
+    this->players[x].theOcean.showOcean();
     this->players[x].placeShips(this->boats);
   }
   while (true) { // turn mechanics
