@@ -47,8 +47,6 @@ void Player::placeShips(vector<vector<string>> ships) {
     while (!placed) {
       auto [x, y] = getValidCoords("Enter top right coordinate to place this ship: ");
 
-      cout << x << " " << y << endl;
-
       bool horizontal = false;
       string orientation = getInput("Enter horizontal or verical (h/v): ", "[HVhv]");
       if (orientation == "H" || orientation == "h") {
@@ -81,10 +79,12 @@ void Player::autoPlaceShips(vector<vector<string>> ships) {
   }
 }
 
-// void Player::checkHit(coords) {
-//   if (this->theOcean.checkHit(coords)) {
-//     cout << "Direct hit! Good shot Captain. " << endl;
-//   } else {
-//     cout << "That was a miss Captain, adjust your fire. " << endl;
-//   }
-// }
+int Player::remainingShips() {
+  int counter = 0;
+  for (int i = 0; i < ships.size(); i++) {
+    if (!ships[i].isDestroyed) {
+      counter++;
+    }
+  }
+  return counter;
+}

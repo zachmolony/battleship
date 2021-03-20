@@ -116,25 +116,27 @@ void Game::startGame() {
     this->players[x].theOcean.showOcean();
     this->players[x].placeShips(this->boats);
   }
-  while (true) { // turn mechanics
-    for (int p = 0; p < this->players.size();) {
+
+  while (players[0].remainingShips !== 0 && players[1].remainingShips !== 0) { // turn mechanics
+    for (int p = 0; p < this->players.size(); p++) {
+      int opp = p^1; // get other index: flip 1 <-> 0
+
+      this->players[opp].showOcean();
       // get shot coordinates
       cout << endl << endl << this->players[p].name;
-      string input = getInput(", where do you want to fire? (x,y): ", "[a-zA-Z]+,[0-9]+"); // todo validation
-      vector<string> coords = split(input, ',');  
-      
-      int y = getIndexFromLetter(coords[0]);
-      int x = stoi(coords[1]);
-
+      auto [x, y] = getValidCoords(", where do you want to fire? (x,y): ");
       cout << endl;
 
-      // handle shot on other player's board - flip between 1 and 0
-      auto & opponent = this->players[p ^= 1].theOcean;
-      if (opponent.oceanGrid[x][y].handleTorpedo()) {
-        opponent.showOcean();
-        cout << "Direct hit! Good shot Captain. " << endl << endl;
+      // handle shot on other player's board
+      auto& oppOcean = this->players[opp].theOcean;
+
+      auto [isHit, ship] = oppOcean.oceanGrid[x][y].handleTorpedo();
+      if (isHit) {
+        ship->handleHit();
+        oppOcean.showOcean();
+        cout << "Direct hit! Good shot Captain. " << endl << endl; // todo add wait
       } else {
-        opponent.showOcean();
+        oppOcean.showOcean();
         cout << "That was a miss Captain, adjust your fire. " << endl << endl;
       }
     }

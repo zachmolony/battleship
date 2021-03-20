@@ -16,6 +16,9 @@ class Player {
     Ocean theOcean;
 
     Player(bool isComputer, string name);
+
+    int remainingShips();
+
     void initGame();
     void placeShips(vector<vector<string>> ships);
     void autoPlaceShips(vector<vector<string>> boats);
