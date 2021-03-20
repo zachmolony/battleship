@@ -113,13 +113,3 @@ bool Ocean::placeShip(int x, int y, bool horizontal, int size, string name, Ship
   }
   return true;
 };
-
-void Ocean::handleShot(int x, int y) {
-  if (oceanGrid[x][y].handleTorpedo()) {
-    showOcean();
-    cout << "Direct hit! Good shot Captain. " << endl;
-  } else {
-    showOcean();
-    cout << "That was a miss Captain, adjust your fire. " << endl;
-  }
-}

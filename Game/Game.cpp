@@ -111,14 +111,14 @@ int Game::menu() {
 }
 
 void Game::startGame() {
-  cout << "Starting Game " << endl << endl;
+  cout << "Starting Game... " << endl << endl;
   for (int x = 0; x < this->players.size(); x++) {
     this->players[x].placeShips(this->boats);
   }
   while (true) { // turn mechanics
-    for (int p = 0; p < this->players.size(); p++) {
+    for (int p = 0; p < this->players.size();) {
       // get shot coordinates
-      cout << "\n" << this->players[p].name;
+      cout << endl << endl << this->players[p].name;
       string input = getInput(", where do you want to fire? (x,y): ", "[a-zA-Z]+,[0-9]+"); // todo validation
       vector<string> coords = split(input, ',');  
       
@@ -127,8 +127,15 @@ void Game::startGame() {
 
       cout << endl;
 
-      // handle shot
-      this->players[p].theOcean.handleShot(x, y);
+      // handle shot on other player's board - flip between 1 and 0
+      auto & opponent = this->players[p ^= 1].theOcean;
+      if (opponent.oceanGrid[x][y].handleTorpedo()) {
+        opponent.showOcean();
+        cout << "Direct hit! Good shot Captain. " << endl << endl;
+      } else {
+        opponent.showOcean();
+        cout << "That was a miss Captain, adjust your fire. " << endl << endl;
+      }
     }
   }
 }

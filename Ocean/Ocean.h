@@ -9,24 +9,20 @@ using namespace std;
 
 
 class Ocean {
+  public:
+    int oceanHeight;
+    int oceanWidth;
+    string playerName;
+    vector<vector<Square>> oceanGrid;
 
-private:
+    Ocean(); // dummy constructor
+    Ocean(int oceanWidth, int oceanHeight, string playerName); // Constructor that takes the ocean dimensions.
 
-public:
-  int oceanHeight;
-  int oceanWidth;
-  string playerName;
-  vector<vector<Square>> oceanGrid;
+    vector<vector<Square>> getGrid(int oceanWidth, int oceanHeight);
 
-  Ocean(); // dummy constructor
-  Ocean(int oceanWidth, int oceanHeight, string playerName); // Constructor that takes the ocean dimensions.
+    bool placeShip(int x, int y, bool direction, int size, string name, Ship* ship);
 
-  vector<vector<Square>> getGrid(int oceanWidth, int oceanHeight);
-
-  bool placeShip(int x, int y, bool direction, int size, string name, Ship* ship);
-
-  void showOcean();
-  void handleShot(int x, int y);
+    void showOcean();
 };
 
 #endif // ADASHIP_OCEAN_H

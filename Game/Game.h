@@ -8,21 +8,18 @@
 using namespace std;
 
 class Game {
+  public:
+    int oceanHeight;
+    int oceanWidth;
+    int score[2] = {0, 0};
+    vector<vector<string>> boats;
+    vector<Player> players;
 
-private:
+    Game(); // Constructor that takes the ocean dimensions.
 
-public:
-  int oceanHeight;
-  int oceanWidth;
-  int score[2] = {0, 0};
-  vector<vector<string>> boats;
-  vector<Player> players;
-
-  Game(); // Constructor that takes the ocean dimensions.
-
-  int menu();
-  void startGame();
-  void readConfigData();
+    int menu();
+    void startGame();
+    void readConfigData();
 };
 
 #endif // ADASHIP_GAME_H

@@ -8,18 +8,15 @@ using namespace std;
 
 
 class Ship {
+  public:
+    int parts;
+    string name;
+    bool isDestroyed = false;
 
-private:
+    Ship();
+    Ship(int parts, string shipType); // constructor
 
-public:
-  int parts;
-  string name;
-  bool isDestroyed = false;
-
-  Ship();
-  Ship(int parts, string shipType); // constructor
-
-  void handleHit();
+    void handleHit();
 };
 
 #endif // ADASHIP_SHIP_H
