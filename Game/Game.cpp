@@ -13,14 +13,16 @@ using namespace std;
 
 Game::Game() {
   Game::readConfigData();
+  string name = getInput("What is your name? ");
+  cout << endl;
   switch (Game::menu()) {
     case 0:
       exit(1);
     case 1:
-      this->players.push_back(Player(false, "Zach"));
-      this->players[0].theOcean = Ocean(this->oceanWidth, this->oceanHeight);
+      this->players.push_back(Player(false, name));
+      this->players[0].theOcean = Ocean(this->oceanWidth, this->oceanHeight, name);
       this->players.push_back(Player(true, "CPU"));
-      this->players[1].theOcean = Ocean(this->oceanWidth, this->oceanHeight);
+      this->players[1].theOcean = Ocean(this->oceanWidth, this->oceanHeight, "CPU");
       break;
     case 2:
       break;
@@ -32,9 +34,8 @@ Game::Game() {
       break;
     case 6:
       break;
-    
-    Game::startGame();
   }
+  Game::startGame();
 };
 
 void Game::readConfigData() {
@@ -67,61 +68,64 @@ void Game::readConfigData() {
 };
 
 int Game::menu() {
-  cout << setfill('*') << setw(40) << endl;
+
+  cout << "██████╗░░█████╗░████████╗████████╗██╗░░░░░███████╗░██████╗██╗░░██╗██╗██████╗░" << endl;
+  cout << "██╔══██╗██╔══██╗╚══██╔══╝╚══██╔══╝██║░░░░░██╔════╝██╔════╝██║░░██║██║██╔══██╗" << endl;
+  cout << "██████╦╝███████║░░░██║░░░░░░██║░░░██║░░░░░█████╗░░╚█████╗░███████║██║██████╔╝" << endl;
+  cout << "██╔══██╗██╔══██║░░░██║░░░░░░██║░░░██║░░░░░██╔══╝░░░╚═══██╗██╔══██║██║██╔═══╝░" << endl;
+  cout << "██████╦╝██║░░██║░░░██║░░░░░░██║░░░███████╗███████╗██████╔╝██║░░██║██║██║░░░░░" << endl;
+  cout << "╚═════╝░╚═╝░░╚═╝░░░╚═╝░░░░░░╚═╝░░░╚══════╝╚══════╝╚═════╝░╚═╝░░╚═╝╚═╝╚═╝░░░░░" << endl << endl;
+
   cout << setw(3) << '*' << ' ' << setw(4) << ' ';
   cout << "Choose a game mode: " << endl;
-  // cout << ' ' << setw(13) << ' ' << setw(26) << '*' << endl;
 
   cout << setw(3) << '*' << ' ' << setfill(' ') << setw(4) << ' ';
   cout << "1: Player vs CPU " << endl;
-  // cout << setfill(' ') << setw(31) << ' ' << setfill('*') << setw(4) << ' ' << endl;
 
   cout << setw(3) << '*' << ' ' << setfill(' ') << setw(4) << ' ';
   cout << "2: Player vs Player " << endl;
-  // cout << setfill(' ') << setw(30) << ' ' << setfill('*') << setw(4) << ' ' << endl;
 
   cout << setw(3) << '*' << ' ' << setfill(' ') << setw(4) << ' ';
   cout << "3: Player vs CPU (Salvo)" << endl;
-  // cout << setfill(' ') << setw(40) << ' ' << setfill('*') << setw(4) << ' ' << endl;
 
   cout << setw(3) << '*' << ' ' << setfill(' ') << setw(4) << ' ';
   cout << "4: Player vs Player (Salvo)" << endl;
-  // cout << setfill(' ') << setw(37) << ' ' << setfill('*') << setw(4) << ' ' << endl;
 
   cout << setw(3) << '*' << ' ' << setfill(' ') << setw(4) << ' ';
   cout << "5: Player vs CPU (Hidden Mines)" << endl;
-  // cout << setfill(' ') << setw(34) << ' ' << setfill('*') << setw(4) << ' ' << endl;
 
   cout << setw(3) << '*' << ' ' << setfill(' ') << setw(4) << ' ';
   cout << "6: Player vs Player (Hidden Mines)" << endl;
-  // cout << setfill(' ') << setw(30) << ' ' << setfill('*') << setw(4) << ' ' << endl;
 
   cout << setw(3) << '*' << ' ' << setfill(' ') << setw(4) << ' ';
   cout << "7: CPU vs CPU (Hidden Mines)" << endl;
-  // cout << setfill(' ') << setw(31) << ' ' << setfill('*') << setw(4) << ' ' << endl;
 
   cout << setw(3) << '*' << ' ' << setfill(' ') << setw(4) << ' ';
-  cout << "0: Quit " << endl;
-  // cout << setfill(' ') << setw(31) << ' ' << setfill('*') << setw(4) << ' ' << endl;
+  cout << "0: Quit " << endl << endl;
 
   // return 1;
-  return getIntegerInput(0, 7);
+
+  int choice = getIntegerInput("Enter an option: ", 0, 7);
+  cout << endl;
+  return choice;
 }
 
 void Game::startGame() {
+  cout << "Starting Game " << endl << endl;
   for (int x = 0; x < this->players.size(); x++) {
     this->players[x].placeShips(this->boats);
   }
-  while (true) {
+  while (true) { // turn mechanics
     for (int p = 0; p < this->players.size(); p++) {
       // get shot coordinates
-      string input = getInput("Where do you want to fire? (x,y): ", "[a-zA-Z]+,[0-9]+");
+      cout << "\n" << this->players[p].name;
+      string input = getInput(", where do you want to fire? (x,y): ", "[a-zA-Z]+,[0-9]+"); // todo validation
       vector<string> coords = split(input, ',');  
       
       int y = getIndexFromLetter(coords[0]);
       int x = stoi(coords[1]);
 
-      cout << "Your shot: " << x << y << endl;
+      cout << endl;
 
       // handle shot
       this->players[p].theOcean.handleShot(x, y);

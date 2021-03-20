@@ -15,10 +15,11 @@ private:
 public:
   int oceanHeight;
   int oceanWidth;
+  string playerName;
   vector<vector<Square>> oceanGrid;
 
   Ocean(); // dummy constructor
-  Ocean(int oceanWidth, int oceanHeight); // Constructor that takes the ocean dimensions.
+  Ocean(int oceanWidth, int oceanHeight, string playerName); // Constructor that takes the ocean dimensions.
 
   vector<vector<Square>> getGrid(int oceanWidth, int oceanHeight);
 

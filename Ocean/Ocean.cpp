@@ -1,5 +1,6 @@
 #include <vector>
 #include <iostream>
+#include <iomanip>
 #include "Ocean.h"
 #include "../Square/Square.h"
 #include "../Ship/Ship.h"
@@ -8,9 +9,10 @@ using namespace std;
 
 Ocean::Ocean() {};
 
-Ocean::Ocean(int oceanWidth, int oceanHeight) {
+Ocean::Ocean(int oceanWidth, int oceanHeight, string playerName) {
   this->oceanWidth = oceanWidth;
   this->oceanHeight = oceanHeight;
+  this->playerName = playerName;
   this->oceanGrid = getGrid(oceanWidth, oceanHeight);
 }
 
@@ -42,6 +44,9 @@ vector<vector<Square>> Ocean::getGrid(int oceanWidth, int oceanHeight) {
 }
 
 void Ocean::showOcean() {
+  // cout << setw(oceanWidth) << '*' << endl;
+  cout << "\n\n   " << this->playerName << "'s Board" << endl;
+  // cout << setw(oceanWidth) << '*' << endl;
   for (int x = 0; x < oceanWidth + 1; x++) { // for each row, format
     if (x == 0) {
       cout << ' ' << ' ' << "|";
@@ -62,6 +67,7 @@ void Ocean::showOcean() {
     }
     cout << endl; // next row
   }
+  cout << endl;
 }
 
 // void Ocean::autoPlaceShips(vector<vector<string>> boats) {

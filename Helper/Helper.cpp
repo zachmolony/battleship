@@ -22,6 +22,10 @@ int randomInt(int max) {
   return (rand() % max) + 1; 
 }
 
+// string capitalise(string s) { // todo
+//   return transform(s.begin(), s.end(),s.begin(), ::toupper);
+// }
+
 int getIndexFromLetter(string s) {
   transform(s.begin(), s.end(),s.begin(), ::toupper); // to uppercase
 
@@ -85,6 +89,7 @@ int getIntegerInput(string prompt, long min, long max) {
       break;
     }
   }
+  cout << endl;
   return number;
 }
 

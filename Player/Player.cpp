@@ -19,22 +19,40 @@ void Player::showOcean() {
 };
 
 void Player::placeShips(vector<vector<string>> ships) {
-  autoPlaceShips(ships);
-  Player::showOcean();
-  return;
+  // autoPlaceShips(ships);
+  // Player::showOcean();
+  // return;
   if (this->isComputer) {
+    cout << endl << endl << "Autoplacing Computer's Ships... " << endl;
     autoPlaceShips(ships);
     return;
   }
-  if (getInput("Do you want to manually place ships? (y/n): ", "[YNyn]") == "y") {
+
+  string autoplacing = getInput("Do you want to manually place ships? (y/n): ", "[YNyn]");
+  if (autoplacing == "n" || autoplacing == "N") {
     autoPlaceShips(ships);
     return;
+  }
+
+  for (int i = 0; i < ships.size(); i++) { // for each boat
+    Ship ship = Ship(stoi(ships[i][1]), ships[i][0]);
+    this->ships.push_back(ship);
+    cout << "Placing " << ship.name << endl;
+
+    bool placed = false;
+    while (!placed) {
+      bool horizontal = randomBool();
+      int x = getIntegerInput("", 1, this->theOcean.oceanWidth);
+      int y = getIntegerInput("", 1, this->theOcean.oceanHeight);
+      placed = this->theOcean.placeShip(x, y, horizontal, ship.parts, ship.name, &ship);
+    }
   }
 }
 
-void Player::autoPlaceShips(vector<vector<string>> boats) {
-  for (int i = 0; i < boats.size(); i++) { // for each boat
-    Ship ship = Ship(stoi(boats[i][1]), boats[i][0]);
+void Player::autoPlaceShips(vector<vector<string>> ships) {
+  cout << endl;
+  for (int i = 0; i < ships.size(); i++) { // for each boat
+    Ship ship = Ship(stoi(ships[i][1]), ships[i][0]);
     this->ships.push_back(ship);
     cout << "Placing " << ship.name << endl;
 
