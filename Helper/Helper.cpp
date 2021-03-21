@@ -6,6 +6,7 @@
 #include <fstream>
 #include <sstream>
 #include <cctype>
+#include <random>
 
 using namespace std;
 
@@ -17,8 +18,12 @@ bool randomBool() { // not a very balanced random implementation but for this us
 }
 
 int randomInt(int max) {
-  srand((unsigned)time(0));
-  return (rand() % max) + 1; 
+  std::random_device rd;     // only used once to initialise (seed) engine
+  std::mt19937 rng(rd());    // random-number engine used (Mersenne-Twister in this case)
+  std::uniform_int_distribution<int> uni(0, max); // guaranteed unbiased
+
+  auto random_integer = uni(rng);
+  return random_integer;
 }
 
 // string capitalise(string s) { // todo
