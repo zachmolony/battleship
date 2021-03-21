@@ -7,6 +7,8 @@
 #include <sstream>
 #include <cctype>
 #include <random>
+#include <chrono>
+#include <thread>
 
 using namespace std;
 
@@ -22,6 +24,10 @@ int randomInt(int max) {
 
 bool randomBool() {
   return randomInt(1) == 1;
+}
+
+void sleep(int seconds = 3) {
+	this_thread::sleep_for(chrono::milliseconds(seconds * 1000)); // we have to convert the seconds to miliseconds 
 }
 
 // string capitalise(string s) { // todo

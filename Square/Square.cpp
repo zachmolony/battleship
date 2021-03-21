@@ -26,7 +26,6 @@ string Square::getIdentifier() {
 }
 
 tuple <bool>Square::handleTorpedo() {
-  cout << "heab";
   if (this->isHit || !this->isShip) {
       this->identifier = ".";
       return { false };

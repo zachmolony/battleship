@@ -1,3 +1,8 @@
+#ifdef __cplusplus__
+  #include <cstdlib>
+#else
+  #include <stdlib.h>
+#endif
 #include <vector>
 #include <string>
 #include <iostream>
@@ -10,11 +15,26 @@
 
 using namespace std;
 
+void showTitle() {
+  cout << "██████╗░░█████╗░████████╗████████╗██╗░░░░░███████╗░██████╗██╗░░██╗██╗██████╗░" << endl;
+  cout << "██╔══██╗██╔══██╗╚══██╔══╝╚══██╔══╝██║░░░░░██╔════╝██╔════╝██║░░██║██║██╔══██╗" << endl;
+  cout << "██████╦╝███████║░░░██║░░░░░░██║░░░██║░░░░░█████╗░░╚█████╗░███████║██║██████╔╝" << endl;
+  cout << "██╔══██╗██╔══██║░░░██║░░░░░░██║░░░██║░░░░░██╔══╝░░░╚═══██╗██╔══██║██║██╔═══╝░" << endl;
+  cout << "██████╦╝██║░░██║░░░██║░░░░░░██║░░░███████╗███████╗██████╔╝██║░░██║██║██║░░░░░" << endl;
+  cout << "╚═════╝░╚═╝░░╚═╝░░░╚═╝░░░░░░╚═╝░░░╚══════╝╚══════╝╚═════╝░╚═╝░░╚═╝╚═╝╚═╝░░░░░" << endl << endl;
+}
+
+void newScreen() {
+  system( "read -n 1 -s -p \"Press any key to continue...\n\"" );
+  if (system("CLS")) system("clear");
+  showTitle();
+}
 
 Game::Game() {
   Game::readConfigData();
+  showTitle();
   string name = getInput("What is your name? ");
-  cout << endl;
+  if (system("CLS")) system("clear");
   switch (Game::menu()) {
     case 0:
       exit(1);
@@ -68,13 +88,7 @@ void Game::readConfigData() {
 };
 
 int Game::menu() {
-
-  cout << "██████╗░░█████╗░████████╗████████╗██╗░░░░░███████╗░██████╗██╗░░██╗██╗██████╗░" << endl;
-  cout << "██╔══██╗██╔══██╗╚══██╔══╝╚══██╔══╝██║░░░░░██╔════╝██╔════╝██║░░██║██║██╔══██╗" << endl;
-  cout << "██████╦╝███████║░░░██║░░░░░░██║░░░██║░░░░░█████╗░░╚█████╗░███████║██║██████╔╝" << endl;
-  cout << "██╔══██╗██╔══██║░░░██║░░░░░░██║░░░██║░░░░░██╔══╝░░░╚═══██╗██╔══██║██║██╔═══╝░" << endl;
-  cout << "██████╦╝██║░░██║░░░██║░░░░░░██║░░░███████╗███████╗██████╔╝██║░░██║██║██║░░░░░" << endl;
-  cout << "╚═════╝░╚═╝░░╚═╝░░░╚═╝░░░░░░╚═╝░░░╚══════╝╚══════╝╚═════╝░╚═╝░░╚═╝╚═╝╚═╝░░░░░" << endl << endl;
+  showTitle();
 
   cout << setw(3) << '*' << ' ' << setw(4) << ' ';
   cout << "Choose a game mode: " << endl;
@@ -126,10 +140,12 @@ tuple <int, int>Game::takeTurn(Player& player) {
 }
 
 void Game::startGame() {
+  newScreen();
   cout << "Starting Game... " << endl << endl; // todo clear screen on turn
   for (int x = 0; x < this->players.size(); x++) {
     this->players[x].theOcean.showOcean();
     this->players[x].placeShips(this->boats);
+    newScreen();
   }
 
   while (players[0].remainingShips() != 0 && players[1].remainingShips() != 0) { // turn mechanics
@@ -145,14 +161,22 @@ void Game::startGame() {
       auto& oppOcean = this->players[opp].theOcean;
 
       auto [isHit] = oppOcean.oceanGrid[x][y].handleTorpedo();
-      if (isHit) {
-        // ship->handleHit();
-        oppOcean.showOcean();
-        cout << "Direct hit! Good shot Captain. " << endl << endl; // todo add wait
+      oppOcean.showOcean();
+      if (players[p].isComputer) {
+        if (isHit) {
+          cout << "Our ship has been hit Captain! ";
+        } else {
+          cout << "Miss! Our fleet is safe Captain. ";
+        }
       } else {
-        oppOcean.showOcean();
-        cout << "That was a miss Captain, adjust your fire. " << endl << endl;
+        if (isHit) {
+          cout << "Direct hit! Good shot Captain. ";
+        } else {
+          cout << "That was a miss Captain, adjust your fire. ";
+        }
       }
+      cout << endl << endl;
+      newScreen();
     }
   }
 }

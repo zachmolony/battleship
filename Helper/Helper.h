@@ -8,9 +8,11 @@ using namespace std;
 
 tuple<int, int> getValidCoords(string prompt, int xMax, int yMax);
 
+int randomInt(int max);
+
 bool randomBool();
 
-int randomInt(int max);
+void sleep(int seconds = 3);
 
 int getIndexFromLetter(string s);
 
