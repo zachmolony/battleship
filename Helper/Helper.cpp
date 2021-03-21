@@ -13,17 +13,15 @@ using namespace std;
 long maximum = numeric_limits<streamsize>::max();
 long minimum = numeric_limits<streamsize>::min();
 
-bool randomBool() { // not a very balanced random implementation but for this use i dont really care
-  return 0 + (rand() % (1 - 0 + 1)) == 1;
+int randomInt(int max) {
+  random_device rd;     // initialised engine
+  mt19937 rng(rd());    // Mersenne-Twister engine
+  uniform_int_distribution<int> uni(0, max); // guaranteed unbiased
+  return uni(rng);
 }
 
-int randomInt(int max) {
-  std::random_device rd;     // only used once to initialise (seed) engine
-  std::mt19937 rng(rd());    // random-number engine used (Mersenne-Twister in this case)
-  std::uniform_int_distribution<int> uni(0, max); // guaranteed unbiased
-
-  auto random_integer = uni(rng);
-  return random_integer;
+bool randomBool() {
+  return randomInt(1) == 1;
 }
 
 // string capitalise(string s) { // todo
