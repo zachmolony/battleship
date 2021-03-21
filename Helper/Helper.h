@@ -24,4 +24,6 @@ int getIntegerInput(string prompt, long min = numeric_limits<streamsize>::min(),
 
 float getFloatInput(string prompt, long min = numeric_limits<streamsize>::min(), long max = numeric_limits<streamsize>::max());
 
+string getColumnString(int n);
+
 #endif

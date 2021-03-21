@@ -113,4 +113,26 @@ tuple<int, int> getValidCoords(string prompt) {
   string input = getInput(prompt, "[a-zA-Z]+,[0-9]+"); // todo validation
   vector<string> coords = split(input, ',');
   return { stoi(coords[1]), getIndexFromLetter(coords[0]) };
+} 
+
+string getColumnString(int n) {
+   string str = "";
+   while (n) {
+      int rem = n % 26;
+      if (rem == 0) {
+         str += 'Z';
+         n = (n / 26) - 1;
+      }
+      else {
+         str += (rem - 1) + 'A';
+         n = n / 26;
+      }
+   }
+   reverse(str.begin(), str.begin() + str.length());
+   return str;
 }
+
+// tuple<int, int> getRandomCoords() {
+//   vector<string> coords = split(input, ',');
+//   return { stoi(coords[1]), getIndexFromLetter(coords[0]) };
+// }

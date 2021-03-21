@@ -117,15 +117,25 @@ void Game::startGame() {
     this->players[x].placeShips(this->boats);
   }
 
-  while (players[0].remainingShips !== 0 && players[1].remainingShips !== 0) { // turn mechanics
+  while (players[0].remainingShips() != 0 && players[1].remainingShips() != 0) { // turn mechanics
     for (int p = 0; p < this->players.size(); p++) {
       int opp = p^1; // get other index: flip 1 <-> 0
 
+      // show opponents ocean
       this->players[opp].showOcean();
-      // get shot coordinates
-      cout << endl << endl << this->players[p].name;
-      auto [x, y] = getValidCoords(", where do you want to fire? (x,y): ");
-      cout << endl;
+
+      int x, y;
+      // cpu player
+      if (this->players[p].isComputer) {
+        int x = randomInt(oceanHeight); // todo test
+        int y = randomInt(oceanWidth);
+        cout << "CPU Fires at " << x << y << endl; 
+      } else { // human player
+        // get shot coordinates
+        cout << endl << endl << this->players[p].name;
+        auto [x, y] = getValidCoords(", where do you want to fire? (x,y): ");
+        cout << endl;
+      }
 
       // handle shot on other player's board
       auto& oppOcean = this->players[opp].theOcean;

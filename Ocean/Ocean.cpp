@@ -4,6 +4,7 @@
 #include "Ocean.h"
 #include "../Square/Square.h"
 #include "../Ship/Ship.h"
+#include "../Helper/Helper.h"
 
 using namespace std;
 
@@ -59,7 +60,11 @@ void Ocean::showOcean() {
     }
     for (int y = 0; y < oceanHeight + 1; y++) {
       if (x == 0) {
-        cout << " " << char(65 + y) << ' ' << "|"; // todo: add ability for larger board
+        cout << " " << getColumnString(y + 1);
+        if (y < 26) {
+          cout << ' ';
+        }
+        cout << "|";
       }
       else {
         cout << ' ' << oceanGrid[x][y].getIdentifier() << ' ' << "|";
