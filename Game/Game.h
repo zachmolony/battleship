@@ -20,6 +20,7 @@ class Game {
     int menu();
     void startGame();
     void readConfigData();
+    tuple <int, int>takeTurn(Player& player);
 };
 
 #endif // ADASHIP_GAME_H

@@ -25,14 +25,15 @@ string Square::getIdentifier() {
   return this->identifier;
 }
 
-tuple <bool, Ship*>Square::handleTorpedo() {
+tuple <bool>Square::handleTorpedo() {
+  cout << "heab";
   if (this->isHit || !this->isShip) {
       this->identifier = ".";
-      return { false, NULL };
+      return { false };
   }
   // void (*ptrToHitHandler)();
   this->identifier = "*";
   // this->shipRef->handleHit();
   // ptrToHitHandler = shipRef.handleHit();
-  return { true, this->shipRef };
+  return { true };
 }

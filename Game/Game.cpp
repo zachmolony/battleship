@@ -110,8 +110,23 @@ int Game::menu() {
   return choice;
 }
 
+tuple <int, int>Game::takeTurn(Player& player) {
+  // cpu player
+  if (player.isComputer) {
+    int x = randomInt(oceanWidth); // todo test
+    int y = randomInt(oceanHeight);
+    cout << "CPU Fires at " << x << y << endl;
+    return { x, y };
+  } else { // human player
+    // get shot coordinates
+    cout << "\n\n" << player.name << "'s Turn\n";
+    auto [x, y] = getValidCoords("Where do you want to fire? (x,y): ", oceanWidth, oceanHeight);
+    return { x, y };
+  }
+}
+
 void Game::startGame() {
-  cout << "Starting Game... " << endl << endl;
+  cout << "Starting Game... " << endl << endl; // todo clear screen on turn
   for (int x = 0; x < this->players.size(); x++) {
     this->players[x].theOcean.showOcean();
     this->players[x].placeShips(this->boats);
@@ -124,25 +139,14 @@ void Game::startGame() {
       // show opponents ocean
       this->players[opp].showOcean();
 
-      int x, y;
-      // cpu player
-      if (this->players[p].isComputer) {
-        int x = randomInt(oceanHeight); // todo test
-        int y = randomInt(oceanWidth);
-        cout << "CPU Fires at " << x << y << endl; 
-      } else { // human player
-        // get shot coordinates
-        cout << endl << endl << this->players[p].name;
-        auto [x, y] = getValidCoords(", where do you want to fire? (x,y): ");
-        cout << endl;
-      }
+      auto [x, y] = takeTurn(this->players[p]);
 
       // handle shot on other player's board
       auto& oppOcean = this->players[opp].theOcean;
 
-      auto [isHit, ship] = oppOcean.oceanGrid[x][y].handleTorpedo();
+      auto [isHit] = oppOcean.oceanGrid[x][y].handleTorpedo();
       if (isHit) {
-        ship->handleHit();
+        // ship->handleHit();
         oppOcean.showOcean();
         cout << "Direct hit! Good shot Captain. " << endl << endl; // todo add wait
       } else {
