@@ -112,10 +112,18 @@ float getFloatInput(string prompt, long min = minimum, long max = maximum) {
   return number;
 }
 
-tuple<int, int> getValidCoords(string prompt) {
-  string input = getInput(prompt, "[a-zA-Z]+,[0-9]+"); // todo validation
-  vector<string> coords = split(input, ',');
-  return { stoi(coords[1]), getIndexFromLetter(coords[0]) };
+tuple<int, int> getValidCoords(string prompt, int xMax, int yMax) {
+  while (1) {
+    string input = getInput(prompt, "[a-zA-Z]+,[0-9]+");
+    vector<string> coords = split(input, ',');
+    int x = stoi(coords[1]);
+    int y = getIndexFromLetter(coords[0]);
+    if (x > xMax || y > yMax) {
+      cout << "Invalid coordinate, try again. " << endl;
+      continue;
+    }
+    return { x, y };
+  }
 } 
 
 string getColumnString(int n) {

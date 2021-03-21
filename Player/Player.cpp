@@ -45,7 +45,7 @@ void Player::placeShips(vector<vector<string>> ships) {
 
     bool placed = false;
     while (!placed) {
-      auto [x, y] = getValidCoords("Enter top right coordinate to place this ship: ");
+      auto [x, y] = getValidCoords("Enter top right coordinate to place this ship: ", theOcean.oceanWidth, theOcean.oceanHeight);
 
       bool horizontal = false;
       string orientation = getInput("Enter horizontal or verical (h/v): ", "[HVhv]");

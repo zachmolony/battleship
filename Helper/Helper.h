@@ -6,7 +6,7 @@
 
 using namespace std;
 
-tuple<int, int> getValidCoords(string prompt);
+tuple<int, int> getValidCoords(string prompt, int xMax, int yMax);
 
 bool randomBool();
 
