@@ -88,9 +88,27 @@ void Game::readConfigData() {
   file.close();
 };
 
-int Game::menu() {
-  showTitle();
+void Game::setupGame(int humanPlayers, bool salvo, bool hiddenmines) {
+  for (int x = 0; x < humanPlayers; x++) {
+    string playerName = "Player " + to_string(x + 1);
+    Player player = Player(false, playerName);
+    player.theOcean = Ocean(this->oceanWidth, this->oceanHeight, playerName);
+    this->players.push_back(player);
+  }
+  for (int x = 0; x < humanPlayers % 2; x++) {
+    string playerName = "CPU " + to_string(x + 1);
+    Player player = Player(true, playerName);
+    player.theOcean = Ocean(this->oceanWidth, this->oceanHeight, playerName);
+    this->players.push_back(player);
+  }
+  
 
+  Game::startGame();
+}
+
+int Game::menu() {
+  if (system("CLS")) system("clear");
+  showTitle();
   cout << setw(3) << '*' << ' ' << setw(4) << ' ';
   cout << "Choose a game mode: " << endl;
 

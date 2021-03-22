@@ -18,6 +18,7 @@ class Game {
     Game(); // Constructor that takes the ocean dimensions.
 
     int menu();
+    void setupGame(int humanPlayers, bool salvo, bool hiddenmines);
     void startGame();
     void readConfigData();
     tuple <int, int>takeTurn(Player& player);
