@@ -78,8 +78,9 @@ void Player::autoPlaceShips(vector<vector<string>> ships) {
     bool placed = false;
     while (!placed) {
       bool horizontal = randomBool();
-      int x = randomInt(this->theOcean->oceanWidth);
-      int y = randomInt(this->theOcean->oceanHeight);
+      int x = randomInt(this->theOcean->oceanWidth - 1) + 1;
+      int y = randomInt(this->theOcean->oceanHeight - 1) + 1;
+
       placed = this->theOcean->placeShip(x, y, horizontal, pShip->parts, pShip->name, pShip);
     }
   }

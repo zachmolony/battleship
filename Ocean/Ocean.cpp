@@ -68,10 +68,9 @@ void Ocean::showOcean() {
   cout << endl;
 }
 
-
 bool Ocean::placeShip(int x, int y, bool horizontal, int size, string name, Ship* ship) {
   if (horizontal) {
-    if (x + size > oceanWidth + 1) { // check is not too far to the edge
+    if (y + size > oceanHeight) { // check is not too far to the edge
       return false;
     }
     for (int squarecount = 0; squarecount < size; squarecount++) { // for the length of the ship
@@ -84,7 +83,7 @@ bool Ocean::placeShip(int x, int y, bool horizontal, int size, string name, Ship
       this->oceanGrid[x][y + remainingSquares]->placeShip(name, ship);
     };
   } else { // same thing for horizontal
-    if (x + size > oceanWidth + 1) {
+    if (x + size > oceanWidth) {
       return false;
     }
     for (int squarecount = 0; squarecount < size; squarecount++) { 

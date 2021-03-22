@@ -108,7 +108,6 @@ void Game::setupGame(int humanPlayers, bool salvo, bool hiddenmines) {
     player->theOcean = new Ocean(this->oceanWidth, this->oceanHeight, playerName);
     this->players.push_back(player);
   }
-
 }
 
 int Game::menu() {
@@ -151,8 +150,8 @@ int Game::menu() {
 tuple <int, int>Game::takeTurn(Player* player) {
   // cpu player
   if (player->isComputer) {
-    int x = randomInt(oceanWidth);
-    int y = randomInt(oceanHeight);
+    int x = randomInt(oceanWidth) + 1;
+    int y = randomInt(oceanHeight) + 1;
     cout << "CPU Fires at " << x << y << endl;
     sleep();
     return { x, y };
@@ -176,21 +175,6 @@ void showWinner(string playerName) {
   cout << R"(               _.' '._)" << endl;
   cout << R"(              '\"\"\"\"\"\"\"')" << endl;
   cout << "              " << setw(8) << playerName << endl;
-}
-
-void Game::startGame() {
-  if (system("CLS")) system("clear");
-  showTitle();
-  cout << "Starting Game... " << endl << endl; // todo clear screen on turn
-  for (int x = 0; x < this->players.size(); x++) {
-    this->players[x]->theOcean->showOcean();
-    this->players[x]->placeShips(this->boats);
-    newScreen();
-  }
-
-  string winner = playGame();
-
-  showWinner(winner);
 }
 
 string Game::playGame() {
@@ -218,4 +202,18 @@ string Game::playGame() {
       }
     }
   }
+}
+
+void Game::startGame() {
+  if (system("CLS")) system("clear");
+  showTitle();
+  cout << "Starting Game... " << endl << endl; // todo clear screen on turn
+  for (int x = 0; x < this->players.size(); x++) {
+    this->players[x]->theOcean->showOcean();
+    this->players[x]->placeShips(this->boats);
+    newScreen();
+  }
+
+  string winner = playGame();
+  showWinner(winner);
 }
