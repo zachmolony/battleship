@@ -25,37 +25,38 @@ void showTitle() {
 }
 
 void newScreen() {
-  system( "read -n 1 -s -p \"Press any key to continue...\n\"" );
+  system( "read -n 1 -s -p \"Press any key to continue...\"" );
   if (system("CLS")) system("clear");
   showTitle();
 }
 
 Game::Game() {
   Game::readConfigData();
-  showTitle();
-  string name = getInput("What is your name? ");
-  if (system("CLS")) system("clear");
   switch (Game::menu()) {
     case 0:
       exit(1);
     case 1:
-      this->players.push_back(Player(false, name));
-      this->players[0].theOcean = Ocean(this->oceanWidth, this->oceanHeight, name);
-      this->players.push_back(Player(true, "CPU"));
-      this->players[1].theOcean = Ocean(this->oceanWidth, this->oceanHeight, "CPU");
+      setupGame(1, false, false);
       break;
     case 2:
+      setupGame(2, false, false);
       break;
     case 3:
+      setupGame(1, true, false);
       break;
     case 4:
+      setupGame(2, true, false);
       break;
     case 5:
+      setupGame(1, false, true);
       break;
     case 6:
+      setupGame(2, false, true);
+      break;
+    case 7:
+      setupGame(0, false, true);
       break;
   }
-  Game::startGame();
 };
 
 void Game::readConfigData() {
@@ -127,9 +128,10 @@ int Game::menu() {
 tuple <int, int>Game::takeTurn(Player& player) {
   // cpu player
   if (player.isComputer) {
-    int x = randomInt(oceanWidth); // todo test
+    int x = randomInt(oceanWidth);
     int y = randomInt(oceanHeight);
     cout << "CPU Fires at " << x << y << endl;
+    sleep();
     return { x, y };
   } else { // human player
     // get shot coordinates
@@ -140,7 +142,8 @@ tuple <int, int>Game::takeTurn(Player& player) {
 }
 
 void Game::startGame() {
-  newScreen();
+  if (system("CLS")) system("clear");
+  showTitle();
   cout << "Starting Game... " << endl << endl; // todo clear screen on turn
   for (int x = 0; x < this->players.size(); x++) {
     this->players[x].theOcean.showOcean();

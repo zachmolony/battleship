@@ -26,7 +26,7 @@ bool randomBool() {
   return randomInt(1) == 1;
 }
 
-void sleep(int seconds = 3) {
+void sleep(int seconds = 1) {
 	this_thread::sleep_for(chrono::milliseconds(seconds * 1000)); // we have to convert the seconds to miliseconds 
 }
 
