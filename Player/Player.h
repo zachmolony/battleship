@@ -12,10 +12,11 @@ class Player {
   public:
     string name;
     bool isComputer;
-    vector<Ship> ships;
-    Ocean theOcean;
+    vector<Ship*> ships;
+    Ocean *theOcean;
 
     Player(bool isComputer, string name);
+    ~Player();
 
     int remainingShips();
 

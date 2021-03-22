@@ -13,15 +13,16 @@ class Game {
     int oceanWidth;
     int score[2] = {0, 0};
     vector<vector<string>> boats;
-    vector<Player> players;
+    vector<Player *> players;
 
     Game(); // Constructor that takes the ocean dimensions.
+    ~Game();
 
     int menu();
     void setupGame(int humanPlayers, bool salvo, bool hiddenmines);
     void startGame();
     void readConfigData();
-    tuple <int, int>takeTurn(Player& player);
+    tuple <int, int>takeTurn(Player* player);
 };
 
 #endif // ADASHIP_GAME_H

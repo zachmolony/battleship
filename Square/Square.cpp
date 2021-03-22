@@ -32,7 +32,7 @@ tuple <bool>Square::handleTorpedo() {
   }
   // void (*ptrToHitHandler)();
   this->identifier = "*";
-  // this->shipRef->handleHit();
+  this->shipRef->handleHit();
   // ptrToHitHandler = shipRef.handleHit();
   return { true };
 }

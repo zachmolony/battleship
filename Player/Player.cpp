@@ -14,8 +14,15 @@ Player::Player(bool isComputer, string name) {
   this->isComputer = isComputer;
 };
 
+Player::~Player() {
+  for (Ship *ship: ships){
+    delete ship;
+  }
+  delete theOcean;
+}
+
 void Player::showOcean() {
-  this->theOcean.showOcean();
+  this->theOcean->showOcean();
 };
 
 void Player::placeShips(vector<vector<string>> ships) {
@@ -25,7 +32,7 @@ void Player::placeShips(vector<vector<string>> ships) {
   if (this->isComputer) {
     cout << endl << endl << "Autoplacing Computer's Ships... " << endl;
     autoPlaceShips(ships);
-    theOcean.showOcean();
+    theOcean->showOcean();
     return;
   }
 
@@ -36,17 +43,17 @@ void Player::placeShips(vector<vector<string>> ships) {
       cout << endl << "Autoplacing Ships...\n";
       vector<vector<string>> remaining = vector<vector<string>>(ships.begin() + i, ships.end());
       autoPlaceShips(remaining);
-      theOcean.showOcean();
+      theOcean->showOcean();
       return;
     }
 
-    Ship ship = Ship(stoi(ships[i][1]), ships[i][0]);
-    this->ships.push_back(ship);
-    cout << "Placing " << ship.name << ". Length is " << ship.parts << endl;
+    Ship* pShip = new Ship(stoi(ships[i][1]), ships[i][0]);
+    this->ships.push_back(pShip);
+    cout << "Placing " << pShip->name << ". Length is " << pShip->parts << endl;
 
     bool placed = false;
     while (!placed) {
-      auto [x, y] = getValidCoords("Enter top right coordinate to place this ship: ", theOcean.oceanWidth, theOcean.oceanHeight);
+      auto [x, y] = getValidCoords("Enter top right coordinate to place this ship: ", theOcean->oceanWidth, theOcean->oceanHeight);
 
       bool horizontal = false;
       string orientation = getInput("Enter horizontal or verical (h/v): ", "[HVhv]");
@@ -54,26 +61,26 @@ void Player::placeShips(vector<vector<string>> ships) {
         horizontal = true;
       };
 
-      placed = this->theOcean.placeShip(x, y, horizontal, ship.parts, ship.name, &ship);
+      placed = this->theOcean->placeShip(x, y, horizontal, pShip->parts, pShip->name, pShip);
       if (!placed) {
         cout << "Placement failed. Try another coordinate." << endl; 
       }
     }
-    theOcean.showOcean();
+    theOcean->showOcean();
   }
 }
 
 void Player::autoPlaceShips(vector<vector<string>> ships) {
   for (int i = 0; i < ships.size(); i++) { // for each boat
-    Ship ship = Ship(stoi(ships[i][1]), ships[i][0]);
-    this->ships.push_back(ship);
+    Ship *pShip = new Ship(stoi(ships[i][1]), ships[i][0]);
+    this->ships.push_back(pShip);
 
     bool placed = false;
     while (!placed) {
       bool horizontal = randomBool();
-      int x = randomInt(this->theOcean.oceanWidth);
-      int y = randomInt(this->theOcean.oceanHeight);
-      placed = this->theOcean.placeShip(x, y, horizontal, ship.parts, ship.name, &ship);
+      int x = randomInt(this->theOcean->oceanWidth);
+      int y = randomInt(this->theOcean->oceanHeight);
+      placed = this->theOcean->placeShip(x, y, horizontal, pShip->parts, pShip->name, pShip);
     }
   }
 }
@@ -81,7 +88,7 @@ void Player::autoPlaceShips(vector<vector<string>> ships) {
 int Player::remainingShips() {
   int counter = 0;
   for (int i = 0; i < ships.size(); i++) {
-    if (!ships[i].isDestroyed) {
+    if (!ships[i]->isDestroyed) {
       counter++;
     }
   }

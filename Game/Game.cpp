@@ -57,7 +57,14 @@ Game::Game() {
       setupGame(0, false, true);
       break;
   }
+  startGame();
 };
+
+Game::~Game() {
+  for (Player *p  : players){
+    delete p;
+  }
+}
 
 void Game::readConfigData() {
   const string FILE_NAME = "adaship_config.ini";
@@ -91,19 +98,17 @@ void Game::readConfigData() {
 void Game::setupGame(int humanPlayers, bool salvo, bool hiddenmines) {
   for (int x = 0; x < humanPlayers; x++) {
     string playerName = "Player " + to_string(x + 1);
-    Player player = Player(false, playerName);
-    player.theOcean = Ocean(this->oceanWidth, this->oceanHeight, playerName);
+    Player *player = new Player(false, playerName);
+    player->theOcean = new Ocean(this->oceanWidth, this->oceanHeight, playerName);
     this->players.push_back(player);
   }
   for (int x = 0; x < humanPlayers % 2; x++) {
     string playerName = "CPU " + to_string(x + 1);
-    Player player = Player(true, playerName);
-    player.theOcean = Ocean(this->oceanWidth, this->oceanHeight, playerName);
+    Player *player = new Player(true, playerName);
+    player->theOcean = new Ocean(this->oceanWidth, this->oceanHeight, playerName);
     this->players.push_back(player);
   }
-  
 
-  Game::startGame();
 }
 
 int Game::menu() {
@@ -143,9 +148,9 @@ int Game::menu() {
   return choice;
 }
 
-tuple <int, int>Game::takeTurn(Player& player) {
+tuple <int, int>Game::takeTurn(Player* player) {
   // cpu player
-  if (player.isComputer) {
+  if (player->isComputer) {
     int x = randomInt(oceanWidth);
     int y = randomInt(oceanHeight);
     cout << "CPU Fires at " << x << y << endl;
@@ -153,7 +158,7 @@ tuple <int, int>Game::takeTurn(Player& player) {
     return { x, y };
   } else { // human player
     // get shot coordinates
-    cout << "\n\n" << player.name << "'s Turn\n";
+    cout << "\n\n" << player->name << "'s Turn\n";
     auto [x, y] = getValidCoords("Where do you want to fire? (x,y): ", oceanWidth, oceanHeight);
     return { x, y };
   }
@@ -164,26 +169,26 @@ void Game::startGame() {
   showTitle();
   cout << "Starting Game... " << endl << endl; // todo clear screen on turn
   for (int x = 0; x < this->players.size(); x++) {
-    this->players[x].theOcean.showOcean();
-    this->players[x].placeShips(this->boats);
+    this->players[x]->theOcean->showOcean();
+    this->players[x]->placeShips(this->boats);
     newScreen();
   }
 
-  while (players[0].remainingShips() != 0 && players[1].remainingShips() != 0) { // turn mechanics
+  while (players[0]->remainingShips() != 0 && players[1]->remainingShips() != 0) { // turn mechanics
     for (int p = 0; p < this->players.size(); p++) {
       int opp = p^1; // get other index: flip 1 <-> 0
 
       // show opponents ocean
-      this->players[opp].showOcean();
+      this->players[opp]->showOcean();
 
       auto [x, y] = takeTurn(this->players[p]);
 
       // handle shot on other player's board
-      auto& oppOcean = this->players[opp].theOcean;
+      auto* oppOcean = this->players[opp]->theOcean;
 
-      auto [isHit] = oppOcean.oceanGrid[x][y].handleTorpedo();
-      oppOcean.showOcean();
-      if (players[p].isComputer) {
+      auto [isHit] = oppOcean->oceanGrid[x][y]->handleTorpedo();
+      oppOcean->showOcean();
+      if (players[p]->isComputer) {
         if (isHit) {
           cout << "Our ship has been hit Captain! ";
         } else {
@@ -200,4 +205,5 @@ void Game::startGame() {
       newScreen();
     }
   }
+  // todo win
 }

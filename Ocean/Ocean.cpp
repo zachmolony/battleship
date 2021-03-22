@@ -14,7 +14,23 @@ Ocean::Ocean(int oceanWidth, int oceanHeight, string playerName) {
   this->oceanWidth = oceanWidth;
   this->oceanHeight = oceanHeight;
   this->playerName = playerName;
-  this->oceanGrid = getGrid(oceanWidth, oceanHeight);
+
+   for (unsigned int i = 0; i < oceanWidth + 1; i++) {
+    vector<Square*> row;
+    for (unsigned int j = 0; j < oceanHeight + 1; j++) {
+      row.emplace_back(new Square());
+    }
+    oceanGrid.push_back(row);
+  }
+}
+
+Ocean::~Ocean() {
+  for (const auto &row: oceanGrid)
+  {
+    for (Square *sq: row){
+      delete sq;
+    }
+  }
 }
 
 // Square Ocean::getGrid(int oceanWidth, int oceanHeight) {
@@ -30,18 +46,8 @@ Ocean::Ocean(int oceanWidth, int oceanHeight, string playerName) {
 //   return *grid;
 // }
 
-vector<vector<Square>> Ocean::getGrid(int oceanWidth, int oceanHeight) {
-  vector<vector<Square>> grid;
-
-  for (unsigned int i = 0; i < oceanWidth + 1; i++) {
-    vector<Square> row;
-    for (unsigned int j = 0; j < oceanHeight + 1; j++) {
-      row.emplace_back(Square());
-    }
-    grid.push_back(row);
-  }
-
-  return grid;
+vector<vector<Square*>>& Ocean::getGrid() {
+  return oceanGrid;
 }
 
 void Ocean::showOcean() {
@@ -67,7 +73,7 @@ void Ocean::showOcean() {
         cout << "|";
       }
       else {
-        cout << ' ' << oceanGrid[x][y].getIdentifier() << ' ' << "|";
+        cout << ' ' << oceanGrid[x][y]->getIdentifier() << ' ' << "|";
       }
     }
     cout << endl; // next row
@@ -95,25 +101,25 @@ bool Ocean::placeShip(int x, int y, bool horizontal, int size, string name, Ship
       return false;
     }
     for (int squarecount = 0; squarecount < size; squarecount++) { // for the length of the ship
-      if (this->oceanGrid[x][y + squarecount].isShip) { // check no ship exists on that square
+      if (this->oceanGrid[x][y + squarecount]->isShip) { // check no ship exists on that square
         return false;
       }
     }
      // place the ship once we know the spots are free
     for (int remainingSquares = 0; remainingSquares < size; remainingSquares++) {
-      this->oceanGrid[x][y + remainingSquares].placeShip(name, ship);
+      this->oceanGrid[x][y + remainingSquares]->placeShip(name, ship);
     };
   } else { // same thing for horizontal
     if (x + size > oceanWidth + 1) {
       return false;
     }
     for (int squarecount = 0; squarecount < size; squarecount++) { 
-      if (this->oceanGrid[x + squarecount][y].isShip) {
+      if (this->oceanGrid[x + squarecount][y]->isShip) {
         return false;
       }
     }
     for (int remainingSquares = 0; remainingSquares < size; remainingSquares++) {
-      this->oceanGrid[x + remainingSquares][y].placeShip(name, ship);
+      this->oceanGrid[x + remainingSquares][y]->placeShip(name, ship);
     };
   }
   return true;
