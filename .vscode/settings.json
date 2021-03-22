@@ -63,6 +63,10 @@
         "utility": "cpp",
         "deque": "cpp",
         "fstream": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "regex": "cpp",
+        "numeric": "cpp",
+        "random": "cpp",
+        "filesystem": "cpp"
     }
 }

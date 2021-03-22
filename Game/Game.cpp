@@ -165,16 +165,16 @@ tuple <int, int>Game::takeTurn(Player* player) {
 }
 
 void showWinner(string playerName) {
-  cout << "               ___________" << endl; 
-  cout << "            '._==_==_=_.'" << endl;
-  cout << "            .-\:      /-." << endl;
-  cout << "           | (|:.     |) |" << endl;
-  cout << "            '-|:.     |-'" << endl;
-  cout << "              \::.    /" << endl;
-  cout << "               '::. .'" << endl;
-  cout << "                 ) (" << endl;
-  cout << "               _.' '._" << endl;
-  cout << "              '\"\"\"\"\"\"\"'" << endl;
+  cout << R"(               ___________)" << endl; 
+  cout << R"(            '._==_==_=_.')" << endl;
+  cout << R"(            .-\:      /-.)" << endl;
+  cout << R"(           | (|:.     |) |)" << endl;
+  cout << R"(            '-|:.     |-')" << endl;
+  cout << R"(              \::.    /)" << endl;
+  cout << R"(               '::. .')" << endl;
+  cout << R"(                 ) ()" << endl;
+  cout << R"(               _.' '._)" << endl;
+  cout << R"(              '\"\"\"\"\"\"\"')" << endl;
   cout << "              " << setw(8) << playerName << endl;
 }
 

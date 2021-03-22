@@ -33,19 +33,6 @@ Ocean::~Ocean() {
   }
 }
 
-// Square Ocean::getGrid(int oceanWidth, int oceanHeight) {
-//   Square* grid = (Square*)malloc(sizeof(Square) * oceanWidth);
-//   for (int i = 0; i < oceanWidth; i++) {
-//     Square* row = (Square*)malloc(sizeof(Square) * oceanHeight);
-//     for (int j = 0; j < oceanHeight; j++) {
-//       // Square *thing = ;
-//       row[j] = Square(true, "^", "yeah"); // add a square to this item
-//     }
-//     grid[i] = *row; // add this row to the grid
-//   }
-//   return *grid;
-// }
-
 vector<vector<Square*>>& Ocean::getGrid() {
   return oceanGrid;
 }
@@ -55,7 +42,7 @@ void Ocean::showOcean() {
   cout << "\n\n   " << this->playerName << "'s Board" << endl;
   // cout << setw(oceanWidth) << '*' << endl;
   for (int x = 0; x < oceanWidth + 1; x++) { // for each row, format
-    if (x == 0) {
+    if (x == 0) { // numbering on right side
       cout << ' ' << ' ' << "|";
     }
     else if (x > 0 && x < 10) {
@@ -65,14 +52,14 @@ void Ocean::showOcean() {
       cout << x << "|";
     }
     for (int y = 0; y < oceanHeight + 1; y++) {
-      if (x == 0) {
+      if (x == 0) { // lettering 
         cout << " " << getColumnString(y + 1);
         if (y < 26) {
           cout << ' ';
         }
         cout << "|";
       }
-      else {
+      else { // squares
         cout << ' ' << oceanGrid[x][y]->getIdentifier() << ' ' << "|";
       }
     }
@@ -81,19 +68,6 @@ void Ocean::showOcean() {
   cout << endl;
 }
 
-// void Ocean::autoPlaceShips(vector<vector<string>> boats) {
-//   for (int i = 0; i < boats.size(); i++) { // for each boat
-//     Ship ship = Ship(stoi(boats[i][1]), boats[i][0]);
-//     cout << "Placing " << ship.name << endl;
-//     bool placed = false;
-//     while (!placed) {
-//       bool horizontal = randomBool();
-//       int x = randomInt(this->oceanWidth);
-//       int y = randomInt(this->oceanHeight);
-//       placed = placeShip(x, y, horizontal, ship.parts, ship.name, ship);
-//     }
-//   }
-// }
 
 bool Ocean::placeShip(int x, int y, bool horizontal, int size, string name, Ship* ship) {
   if (horizontal) {
