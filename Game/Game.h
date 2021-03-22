@@ -23,6 +23,7 @@ class Game {
     void startGame();
     void readConfigData();
     tuple <int, int>takeTurn(Player* player);
+    string playGame();
 };
 
 #endif // ADASHIP_GAME_H

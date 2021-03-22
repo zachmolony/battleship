@@ -188,8 +188,14 @@ void Game::startGame() {
     newScreen();
   }
 
-  for (int p = 0; p < this->players.size(); p++) {
-    while (players[0]->remainingShips() != 0 && players[1]->remainingShips() != 0) { // turn mechanics
+  string winner = playGame();
+
+  showWinner(winner);
+}
+
+string Game::playGame() {
+  while (true) { // turn mechanics
+    for (int p = 0; p < this->players.size(); p++) {
       int opp = p^1; // get other index: flip 1 <-> 0
 
       // show opponents ocean
@@ -203,13 +209,13 @@ void Game::startGame() {
       oppOcean->showOcean();
       cout << endl << endl;
       newScreen();
+      if (players[0]->remainingShips() != 0 && players[1]->remainingShips() != 0) {
+        if (players[0]->remainingShips() != 0) {
+          return players[0]->name;
+        } else {
+          return players[1]->name;
+        }
+      }
     }
   }
-  string winner;
-  if (players[0]->remainingShips() != 0) {
-    winner = players[0]->name;
-  } else {
-    winner = players[1]->name;
-  }
-  showWinner(winner);
 }
