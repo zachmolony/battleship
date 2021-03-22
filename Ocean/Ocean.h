@@ -9,10 +9,12 @@ using namespace std;
 
 
 class Ocean {
+  private:
+    string playerName;
+
   public:
     int oceanHeight;
     int oceanWidth;
-    string playerName;
     vector<vector<Square*>> oceanGrid;
 
     Ocean(); // dummy constructor

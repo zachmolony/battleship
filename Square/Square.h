@@ -20,7 +20,7 @@ class Square {
 
     void placeShip(string name, Ship* ship);
     string getIdentifier();
-    tuple <bool> handleTorpedo();
+    void handleTorpedo(string playerName);
 };
 
 #endif // ADASHIP_SQUARE_H

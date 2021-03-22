@@ -164,6 +164,20 @@ tuple <int, int>Game::takeTurn(Player* player) {
   }
 }
 
+void showWinner(string playerName) {
+  cout << "               ___________" << endl; 
+  cout << "            '._==_==_=_.'" << endl;
+  cout << "            .-\:      /-." << endl;
+  cout << "           | (|:.     |) |" << endl;
+  cout << "            '-|:.     |-'" << endl;
+  cout << "              \::.    /" << endl;
+  cout << "               '::. .'" << endl;
+  cout << "                 ) (" << endl;
+  cout << "               _.' '._" << endl;
+  cout << "              '\"\"\"\"\"\"\"'" << endl;
+  cout << "              " << setw(8) << playerName << endl;
+}
+
 void Game::startGame() {
   if (system("CLS")) system("clear");
   showTitle();
@@ -174,8 +188,8 @@ void Game::startGame() {
     newScreen();
   }
 
-  while (players[0]->remainingShips() != 0 && players[1]->remainingShips() != 0) { // turn mechanics
-    for (int p = 0; p < this->players.size(); p++) {
+  for (int p = 0; p < this->players.size(); p++) {
+    while (players[0]->remainingShips() != 0 && players[1]->remainingShips() != 0) { // turn mechanics
       int opp = p^1; // get other index: flip 1 <-> 0
 
       // show opponents ocean
@@ -185,25 +199,17 @@ void Game::startGame() {
 
       // handle shot on other player's board
       auto* oppOcean = this->players[opp]->theOcean;
-
-      auto [isHit] = oppOcean->oceanGrid[x][y]->handleTorpedo();
+      oppOcean->oceanGrid[x][y]->handleTorpedo(players[opp]->name);
       oppOcean->showOcean();
-      if (players[p]->isComputer) {
-        if (isHit) {
-          cout << "Our ship has been hit Captain! ";
-        } else {
-          cout << "Miss! Our fleet is safe Captain. ";
-        }
-      } else {
-        if (isHit) {
-          cout << "Direct hit! Good shot Captain. ";
-        } else {
-          cout << "That was a miss Captain, adjust your fire. ";
-        }
-      }
       cout << endl << endl;
       newScreen();
     }
   }
-  // todo win
+  string winner;
+  if (players[0]->remainingShips() != 0) {
+    winner = players[0]->name;
+  } else {
+    winner = players[1]->name;
+  }
+  showWinner(winner);
 }

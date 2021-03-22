@@ -16,7 +16,7 @@ class Ship {
     Ship();
     Ship(int parts, string shipType); // constructor
 
-    void handleHit();
+    void handleHit(string playerName);
 };
 
 #endif // ADASHIP_SHIP_H
