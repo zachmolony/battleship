@@ -15,6 +15,21 @@
 
 using namespace std;
 
+void showWinner(string playerName) {
+  cout << R"(             ___________)" << endl; 
+  cout << R"(            '._==_==_=_.')" << endl;
+  cout << R"(            .-\:      /-.)" << endl;
+  cout << R"(           | (|:.     |) |)" << endl;
+  cout << R"(            '-|:.     |-')" << endl;
+  cout << R"(              \::.    /)" << endl;
+  cout << R"(               '::. .')" << endl;
+  cout << R"(                 ) ()" << endl;
+  cout << R"(               _.' '._)" << endl;
+  cout << R"(              '"""""""')" << endl;
+  cout << "              " << setw(9) << playerName << endl << endl << endl;
+  cout << "       " << "Congratulations!!!" << endl << endl;
+}
+
 void showTitle() {
   cout << "██████╗░░█████╗░████████╗████████╗██╗░░░░░███████╗░██████╗██╗░░██╗██╗██████╗░" << endl;
   cout << "██╔══██╗██╔══██╗╚══██╔══╝╚══██╔══╝██║░░░░░██╔════╝██╔════╝██║░░██║██║██╔══██╗" << endl;
@@ -108,6 +123,7 @@ void Game::setupGame(int humanPlayers, bool salvo, bool hiddenmines) {
     player->theOcean = new Ocean(this->oceanWidth, this->oceanHeight, playerName);
     this->players.push_back(player);
   }
+  if (salvo) this->salvo = true;
 }
 
 int Game::menu() {
@@ -147,34 +163,46 @@ int Game::menu() {
   return choice;
 }
 
-tuple <int, int>Game::takeTurn(Player* player) {
+void Game::takeSalvoTurn(Player* player, Player* opponent) {
+  if (player->isComputer) {
+    cout << "\n\n" << player->name << "'s Turn - " << player->remainingShips() << " shots\n";
+    for (int i = 0; i < player->remainingShips(); i++) {
+      int x = randomInt(oceanWidth - 1) + 1;
+      int y = randomInt(oceanHeight - 1) + 1;
+      sleep(1);
+      opponent->theOcean->oceanGrid[x][y]->handleTorpedo(opponent->name);
+    }
+    return;
+  } else {
+    cout << "\n\n" << player->name << "'s Turn - " << player->remainingShips() << " shots\n";
+    vector<tuple<int, int>> shots;
+    for (int i = 0; i < player->remainingShips(); i++) {
+      auto [x, y] = getValidCoords("Where do you want to fire? (x,y e.g. A,2) : ", oceanWidth, oceanHeight);
+      shots.push_back({ x, y });
+      cout << endl;
+    }
+    for (int i = 0; i < shots.size(); i++) {
+      auto [x, y] = shots[i];
+      opponent->theOcean->oceanGrid[x][y]->handleTorpedo(opponent->name);
+    }
+  }
+}
+
+void Game::takeTurn(Player* player, Player* opponent) {
   // cpu player
   if (player->isComputer) {
     int x = randomInt(oceanWidth) + 1;
     int y = randomInt(oceanHeight) + 1;
     cout << "CPU Fires at " << x << y << endl;
-    sleep();
-    return { x, y };
+    sleep(1);
+    opponent->theOcean->oceanGrid[x][y]->handleTorpedo(opponent->name);
+    return;
   } else { // human player
     // get shot coordinates
     cout << "\n\n" << player->name << "'s Turn\n";
-    auto [x, y] = getValidCoords("Where do you want to fire? (x,y): ", oceanWidth, oceanHeight);
-    return { x, y };
+    auto [x, y] = getValidCoords("Where do you want to fire? (x,y e.g. A,2) : ", oceanWidth, oceanHeight);
+    opponent->theOcean->oceanGrid[x][y]->handleTorpedo(opponent->name);
   }
-}
-
-void showWinner(string playerName) {
-  cout << R"(               ___________)" << endl; 
-  cout << R"(            '._==_==_=_.')" << endl;
-  cout << R"(            .-\:      /-.)" << endl;
-  cout << R"(           | (|:.     |) |)" << endl;
-  cout << R"(            '-|:.     |-')" << endl;
-  cout << R"(              \::.    /)" << endl;
-  cout << R"(               '::. .')" << endl;
-  cout << R"(                 ) ()" << endl;
-  cout << R"(               _.' '._)" << endl;
-  cout << R"(              '\"\"\"\"\"\"\"')" << endl;
-  cout << "              " << setw(8) << playerName << endl;
 }
 
 string Game::playGame() {
@@ -185,20 +213,17 @@ string Game::playGame() {
       // show opponents ocean
       this->players[opp]->showOcean();
 
-      auto [x, y] = takeTurn(this->players[p]);
+      if (salvo) {
+        takeSalvoTurn(this->players[p], this->players[opp]);
+      } else {
+        takeTurn(this->players[p], this->players[opp]);
+      }
 
-      // handle shot on other player's board
-      auto* oppOcean = this->players[opp]->theOcean;
-      oppOcean->oceanGrid[x][y]->handleTorpedo(players[opp]->name);
-      oppOcean->showOcean();
+      this->players[opp]->theOcean->showOcean();
       cout << endl << endl;
       newScreen();
-      if (players[0]->remainingShips() != 0 && players[1]->remainingShips() != 0) {
-        if (players[0]->remainingShips() != 0) {
-          return players[0]->name;
-        } else {
-          return players[1]->name;
-        }
+      if (players[opp]->remainingShips() == 0) {
+        return this->players[p]->name;
       }
     }
   }

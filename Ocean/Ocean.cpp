@@ -15,26 +15,29 @@ Ocean::Ocean(int oceanWidth, int oceanHeight, string playerName) {
   this->oceanHeight = oceanHeight;
   this->playerName = playerName;
 
-   for (unsigned int i = 0; i < oceanWidth + 1; i++) {
-    vector<Square*> row;
-    for (unsigned int j = 0; j < oceanHeight + 1; j++) {
-      row.emplace_back(new Square());
-    }
-    oceanGrid.push_back(row);
-  }
+  getGrid
 }
 
 Ocean::~Ocean() {
-  for (const auto &row: oceanGrid)
-  {
+  for (const auto &row: oceanGrid) {
     for (Square *sq: row){
       delete sq;
     }
   }
 }
 
+Ocean::resetGrid() {
+
+}
+
 vector<vector<Square*>>& Ocean::getGrid() {
-  return oceanGrid;
+  for (unsigned int i = 0; i < oceanWidth + 1; i++) {
+    vector<Square*> row;
+    for (unsigned int j = 0; j < oceanHeight + 1; j++) {
+      row.emplace_back(new Square());
+    }
+    oceanGrid.push_back(row);
+  }
 }
 
 void Ocean::showOcean() {
