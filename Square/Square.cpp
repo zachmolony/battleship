@@ -28,7 +28,7 @@ string Square::getIdentifier() {
 void Square::handleTorpedo(string playerName) {
   if (this->isHit || !this->isShip) {
     this->identifier = ".";
-    cout << "Miss! " << playerName << "'s fleet is safe. ";
+    cout << "Miss! " << playerName << "'s fleet is safe. " << endl;
     return;
   }
   this->identifier = "*";

@@ -163,39 +163,45 @@ int Game::menu() {
   return choice;
 }
 
-void Game::takeTurn(Player* player, Player* opponent) {
-  if (salvo) {
-    if (player->isComputer) {
-      for (int i = 0; i < player->remainingShips(); i++) {
-        int x = randomInt(oceanWidth) + 1;
-        int y = randomInt(oceanHeight) + 1;
-        cout << "CPU Fires at " << x << y << endl;
-        sleep(1);
-        opponent->theOcean->oceanGrid[x][y]->handleTorpedo(opponent->name);
-      }
-      return;
-    } else {
-      vector<tuple<int, int>> shots = getSalvoCoords("Where do you want to fire? (x,y e.g. A,2) : ", oceanWidth, oceanHeight, player->remainingShips());
-      for (int i = 0; i < shots.size(); i++) {
-        auto [x, y] = shots[i];
-        opponent->theOcean->oceanGrid[x][y]->handleTorpedo(opponent->name);
-      }
-    }
-  } else {
-    // cpu player
-    if (player->isComputer) {
-      int x = randomInt(oceanWidth) + 1;
-      int y = randomInt(oceanHeight) + 1;
-      cout << "CPU Fires at " << x << y << endl;
+void Game::takeSalvoTurn(Player* player, Player* opponent) {
+  if (player->isComputer) {
+    cout << "\n\n" << player->name << "'s Turn - " << player->remainingShips() << " shots\n";
+    for (int i = 0; i < player->remainingShips(); i++) {
+      int x = randomInt(oceanWidth - 1) + 1;
+      int y = randomInt(oceanHeight - 1) + 1;
       sleep(1);
       opponent->theOcean->oceanGrid[x][y]->handleTorpedo(opponent->name);
-      return;
-    } else { // human player
-      // get shot coordinates
-      cout << "\n\n" << player->name << "'s Turn\n";
+    }
+    return;
+  } else {
+    cout << "\n\n" << player->name << "'s Turn - " << player->remainingShips() << " shots\n";
+    vector<tuple<int, int>> shots;
+    for (int i = 0; i < player->remainingShips(); i++) {
       auto [x, y] = getValidCoords("Where do you want to fire? (x,y e.g. A,2) : ", oceanWidth, oceanHeight);
+      shots.push_back({ x, y });
+      cout << endl;
+    }
+    for (int i = 0; i < shots.size(); i++) {
+      auto [x, y] = shots[i];
       opponent->theOcean->oceanGrid[x][y]->handleTorpedo(opponent->name);
-    }    
+    }
+  }
+}
+
+void Game::takeTurn(Player* player, Player* opponent) {
+  // cpu player
+  if (player->isComputer) {
+    int x = randomInt(oceanWidth) + 1;
+    int y = randomInt(oceanHeight) + 1;
+    cout << "CPU Fires at " << x << y << endl;
+    sleep(1);
+    opponent->theOcean->oceanGrid[x][y]->handleTorpedo(opponent->name);
+    return;
+  } else { // human player
+    // get shot coordinates
+    cout << "\n\n" << player->name << "'s Turn\n";
+    auto [x, y] = getValidCoords("Where do you want to fire? (x,y e.g. A,2) : ", oceanWidth, oceanHeight);
+    opponent->theOcean->oceanGrid[x][y]->handleTorpedo(opponent->name);
   }
 }
 
@@ -207,7 +213,11 @@ string Game::playGame() {
       // show opponents ocean
       this->players[opp]->showOcean();
 
-      takeTurn(this->players[p], this->players[opp]);
+      if (salvo) {
+        takeSalvoTurn(this->players[p], this->players[opp]);
+      } else {
+        takeTurn(this->players[p], this->players[opp]);
+      }
 
       this->players[opp]->theOcean->showOcean();
       cout << endl << endl;

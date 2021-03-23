@@ -30,10 +30,6 @@ void sleep(int seconds = 1) {
 	this_thread::sleep_for(chrono::milliseconds(seconds * 1000)); // we have to convert the seconds to miliseconds 
 }
 
-// string capitalise(string s) { // todo
-//   return transform(s.begin(), s.end(),s.begin(), ::toupper);
-// }
-
 int getIndexFromLetter(string s) {
   transform(s.begin(), s.end(),s.begin(), ::toupper); // to uppercase
 
@@ -43,7 +39,7 @@ int getIndexFromLetter(string s) {
   if (strlen(char_array) == 1) { // for single letters return position via ascii
     return (char_array[0] - 'A');
   }
-  string firstLetter(1, char_array[0]); // for larger coords use recursion
+  string firstLetter(1, char_array[0]); // for larger coords use recursion to find remainder
   return (getIndexFromLetter(firstLetter) * 26) + (char_array[1] - 'A' + 1);
 }
 
@@ -101,23 +97,6 @@ int getIntegerInput(string prompt, long min, long max) {
   return number;
 }
 
-float getFloatInput(string prompt, long min = minimum, long max = maximum) {
-  float number;
-  cout << prompt;
-  cin >> number;
-  while(1) {
-    if(cin.fail() || number > max || number < min) {
-      cin.clear();
-      cin.ignore(maximum, '\n');
-      cout << "Incorrect input, try again: ";
-      cin >> number;
-    } else {
-      break;
-    }
-  }
-  return number;
-}
-
 vector<tuple<int, int>> getSalvoCoords(string prompt, int xMax, int yMax, int shipsLeft) {
   vector<tuple<int, int>> shots;
   label:
@@ -163,21 +142,16 @@ tuple<int, int> getValidCoords(string prompt, int xMax, int yMax) {
 string getColumnString(int n) {
    string str = "";
    while (n) {
-      int rem = n % 26;
-      if (rem == 0) {
+      int remainder = n % 26;
+      if (remainder == 0) {
          str += 'Z';
          n = (n / 26) - 1;
       }
       else {
-         str += (rem - 1) + 'A';
+         str += (remainder - 1) + 'A';
          n = n / 26;
       }
    }
    reverse(str.begin(), str.begin() + str.length());
    return str;
 }
-
-// tuple<int, int> getRandomCoords() {
-//   vector<string> coords = split(input, ',');
-//   return { stoi(coords[1]), getIndexFromLetter(coords[0]) };
-// }

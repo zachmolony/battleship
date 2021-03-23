@@ -23,6 +23,7 @@ class Game {
     void startGame();
     void readConfigData();
     void takeTurn(Player* player, Player* opponent);
+    void takeSalvoTurn(Player* player, Player* opponent);
     string playGame();
 };
 
