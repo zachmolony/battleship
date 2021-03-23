@@ -15,36 +15,6 @@
 
 using namespace std;
 
-void showWinner(string playerName) {
-  cout << R"(             ___________)" << endl; 
-  cout << R"(            '._==_==_=_.')" << endl;
-  cout << R"(            .-\:      /-.)" << endl;
-  cout << R"(           | (|:.     |) |)" << endl;
-  cout << R"(            '-|:.     |-')" << endl;
-  cout << R"(              \::.    /)" << endl;
-  cout << R"(               '::. .')" << endl;
-  cout << R"(                 ) ()" << endl;
-  cout << R"(               _.' '._)" << endl;
-  cout << R"(              '"""""""')" << endl;
-  cout << "              " << setw(9) << playerName << endl << endl << endl;
-  cout << "       " << "Congratulations!!!" << endl << endl;
-}
-
-void showTitle() {
-  cout << "██████╗░░█████╗░████████╗████████╗██╗░░░░░███████╗░██████╗██╗░░██╗██╗██████╗░" << endl;
-  cout << "██╔══██╗██╔══██╗╚══██╔══╝╚══██╔══╝██║░░░░░██╔════╝██╔════╝██║░░██║██║██╔══██╗" << endl;
-  cout << "██████╦╝███████║░░░██║░░░░░░██║░░░██║░░░░░█████╗░░╚█████╗░███████║██║██████╔╝" << endl;
-  cout << "██╔══██╗██╔══██║░░░██║░░░░░░██║░░░██║░░░░░██╔══╝░░░╚═══██╗██╔══██║██║██╔═══╝░" << endl;
-  cout << "██████╦╝██║░░██║░░░██║░░░░░░██║░░░███████╗███████╗██████╔╝██║░░██║██║██║░░░░░" << endl;
-  cout << "╚═════╝░╚═╝░░╚═╝░░░╚═╝░░░░░░╚═╝░░░╚══════╝╚══════╝╚═════╝░╚═╝░░╚═╝╚═╝╚═╝░░░░░" << endl << endl;
-}
-
-void newScreen() {
-  system( "read -n 1 -s -p \"Press any key to continue...\"" );
-  if (system("CLS")) system("clear");
-  showTitle();
-}
-
 Game::Game() {
   Game::readConfigData();
   switch (Game::menu()) {
@@ -127,8 +97,7 @@ void Game::setupGame(int humanPlayers, bool salvo, bool hiddenmines) {
 }
 
 int Game::menu() {
-  if (system("CLS")) system("clear");
-  showTitle();
+  clearScreen();
   cout << setw(3) << '*' << ' ' << setw(4) << ' ';
   cout << "Choose a game mode: " << endl;
 
@@ -230,11 +199,9 @@ string Game::playGame() {
 }
 
 void Game::startGame() {
-  if (system("CLS")) system("clear");
-  showTitle();
+  clearScreen();
   cout << "Starting Game... " << endl << endl; // todo clear screen on turn
   for (int x = 0; x < this->players.size(); x++) {
-    this->players[x]->theOcean->showOcean();
     this->players[x]->placeShips(this->boats);
     newScreen();
   }

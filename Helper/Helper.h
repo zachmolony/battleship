@@ -6,6 +6,14 @@
 
 using namespace std;
 
+void showWinner(string playerName);
+
+void showTitle();
+
+void newScreen();
+
+void clearScreen();
+
 vector<tuple<int, int>> getSalvoCoords(string prompt, int xMax, int yMax, int shipsLeft);
 
 tuple<int, int> getValidCoords(string prompt, int xMax, int yMax);

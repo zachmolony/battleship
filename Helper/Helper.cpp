@@ -15,6 +15,40 @@ using namespace std;
 long maximum = numeric_limits<streamsize>::max();
 long minimum = numeric_limits<streamsize>::min();
 
+void showWinner(string playerName) {
+  cout << R"(             ___________)" << endl; 
+  cout << R"(            '._==_==_=_.')" << endl;
+  cout << R"(            .-\:      /-.)" << endl;
+  cout << R"(           | (|:.     |) |)" << endl;
+  cout << R"(            '-|:.     |-')" << endl;
+  cout << R"(              \::.    /)" << endl;
+  cout << R"(               '::. .')" << endl;
+  cout << R"(                 ) ()" << endl;
+  cout << R"(               _.' '._)" << endl;
+  cout << R"(              '"""""""')" << endl;
+  cout << "              " << setw(9) << playerName << endl << endl << endl;
+  cout << "       " << "Congratulations!!!" << endl << endl;
+}
+
+void showTitle() {
+  cout << "██████╗░░█████╗░████████╗████████╗██╗░░░░░███████╗░██████╗██╗░░██╗██╗██████╗░" << endl;
+  cout << "██╔══██╗██╔══██╗╚══██╔══╝╚══██╔══╝██║░░░░░██╔════╝██╔════╝██║░░██║██║██╔══██╗" << endl;
+  cout << "██████╦╝███████║░░░██║░░░░░░██║░░░██║░░░░░█████╗░░╚█████╗░███████║██║██████╔╝" << endl;
+  cout << "██╔══██╗██╔══██║░░░██║░░░░░░██║░░░██║░░░░░██╔══╝░░░╚═══██╗██╔══██║██║██╔═══╝░" << endl;
+  cout << "██████╦╝██║░░██║░░░██║░░░░░░██║░░░███████╗███████╗██████╔╝██║░░██║██║██║░░░░░" << endl;
+  cout << "╚═════╝░╚═╝░░╚═╝░░░╚═╝░░░░░░╚═╝░░░╚══════╝╚══════╝╚═════╝░╚═╝░░╚═╝╚═╝╚═╝░░░░░" << endl << endl;
+}
+
+void clearScreen() {
+  if (system("CLS")) system("clear");
+  showTitle();
+}
+
+void newScreen() {
+  system( "read -n 1 -s -p \"Press any key to continue...\"" );
+  clearScreen();
+}
+
 int randomInt(int max) {
   random_device rd;     // initialised engine
   mt19937 rng(rd());    // Mersenne-Twister engine
