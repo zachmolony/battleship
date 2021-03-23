@@ -42,7 +42,7 @@ This is an algorithm that improves the targeting of the computer player(s). This
 
 I created a UML diagram of the classes and how they would interact, and what methods and properties they would have (this changed slightly over time but remained very similar to this structure).
 
-![UML Diagram](UML.png 'UML Diagram')
+![UML Diagram](documentation/UML.png 'UML Diagram')
 
 ### Development Strategy
 
@@ -82,35 +82,93 @@ Quality is ensuring that code is robust - it must work in all cases and be able 
 
 Unfortunately, I did not have time to create a framework of unit tests for my code. Ideally, this would be in place and would have helped me ensure that the individual features of my code were working correctly, and each refactor and modification would not need to be manually tested. As mentioned, I tested the feature in an isolated environment, then tested it again after integrating it into my codebase to isolate any bugs. This meant that I could isolate the root cause of bugs much easier than directly in the program. It also meant I could test much quicker than compiling and running through the whole game. Serious game-breaking bugs needed to be addressed as soon as possible, whereas non-blocking and aesthetic bugs were of the lowest priority.
 
-### Key Design Challenges
+### Key Design Challenges and Innovations
 
-#### State management
+#### State management design
 
-I found this challenging as I wasn't sure how best I could allow state to be modified across the program, but also keep this state concurrent. I decided that the best way to do this would be to create a hierarchy of objects in a tree structure, similar to how data is passed around in a simple React project. This meant that data that needed to be drawn from the lower leaves of the tree could be stored and initialised where these branches converge, allowing state to exist in a single location and only be at a level where it was necessary to be. This ensures data quality whilst minimising redundancy and space complexity.
+I found this challenging as I wasn't sure how best I could allow the state to be modified across the program and keep this state concurrent. I decided that the best way to do this would be to create a hierarchy of objects in a tree structure, similar to how data is passed around in a simple React project. This meant that data that needed to be drawn from the lower leaves of the tree could be stored and initialised where these branches converge, allowing state to exist in a single location and only be at a level where it was necessary to be. This ensures data quality whilst minimising redundancy and space complexity.
 
-####
+#### Memory Management
 
-####
+I found this difficult as I have had almost no experience in memory management, and this was a complex project which had several different instances in which I had to deal with pointers and their associated memory. This may have been a failure/complication of my design - my design of an Object-Oriented tree structure meant that a lot of my Objects which were being added as properties of each other were not updating or erroring when accessed from another location in the code.
+This was because I was declaring these objects inside of a function, then assigning a reference to this object to the parent object. However, once this 'setup' function ended, the object to which the reference was referring was lost. This meant that the compiler was trying to access memory which it wasn't allowed to. To solve this, when creating the objects, I created them as pointers with the `new` keyword and passed this pointer down. This meant that these pointers were all pointing to the same, valid object.
+This memory also had to be freed up once the program ends. To do this I created destructors that freed up this memory at the end of the parent's life cycle.
+
+#### Flexible Design
+
+One of the requirements of the game was for it to have several different game modes, with different combinations of human and computer-controlled players. The same goes for an unexpected number and properties of ships, sizes of the board, and a lot of user inputs that needed to be validated/automatically generated.
+This meant that keeping code repetition to a minimum was highly important in creating a maintainable, testable and expandable codebase. To do this, I needed to create specific purpose, agnostic functions which could be reused across the project. I also needed to ensure that my objects and methods were flexible enough to accommodate features that I had not implemented yet. An example of this is my game setup. By passing a variable representing the number of human players to a single setup function, I could create a game with the correct amount of human and computer-controlled players without having to hardcode methods to control this.
 
 ## Evaluation
 
 ### Analysis
 
-refactoring, reuse, smells
+#### Reuse
+
+Throughout my code, I need to get inputs for, and generate, a range of data in multiple places in my code. To achieve this I created a Helper file. This contained a number of functions which could be repeated across my codebase. This is great as it improves maintainability and testability, while minimising the places for bugs to hide. An example of this is my random integer generator.
+
+I need to generate random numbers between certain values. This is necessary to generate evenly distributed spaces on the board to place ships, and for the computer-controlled player to take shots at random coordinates. To minimise code repetition and prevent bugs, I created a function `randomInt` which took a maximum number as a parameter and returned a random number between these.
+Furthermore, I used this function to derive another function's return, `randomBool`. This returns a boolean if the `randomInt` between 0 and 1 is equal to 1 (50% chance). See the implementation below.
+
+![Random Function](documentation/randomfunction.png 'Random Function')
+
+#### Refactoring
+
+The random function, explained previously, was originally using the `rand()` function from the C++ standard library. This is a very poor pseudorandom implementation - the distribution of numbers was extremely biased, often repeating numbers multiple times and often staying within the same 20% of the maximum range. The implications of this were that ships were placed in very close proximity to each other, despite being placed on very large boards. Moreover, this method was painfully slow: placing ships could often take several seconds.
+I upgraded the implementation of this random generation and implemented the Mersenne Twister pseudorandom number generation engine. This speeded up placement timings exponentially, and ship distribution was much more realistic. See the image above for the implementation.
+
+#### Code Smells
+
+##### Feature Envy
+Feature envy is a code smell where an object performs a method on fields pulled from another object, rather than getting that object to do the calculation and returning that value. This was the case in my code when my `Game` class was performing methods based on data from my `Square` and `Ship` classes, at the other end of the tree. My `Game` class called a method on the `Square` which returned a tuple containing multiple bits of data about if the `Square` had been hit and the status of the `Ship` object it was referring to. This was unnecessary and overly complex. I refactored this code to instead not return any data, and handle the actions (outputting shot results to the user) internally.
+
+![](documentation/codesmell1.png 'Intial Refactor')
+
+![](documentation/codesmell2.png 'Final Refactor')
+
+##### Long Methods
+A method should not be too long, as code needs to be readable and maintainable. Methods should serve individual purposes to ensure decoupling and reusability. An example of this in my codebase was my `startGame()` method. This method controlled functionality far beyond its scope and I, therefore, split it into four smaller functions: `playGame`, `getWinner`, `takeTurn` and `takeSalvoTurn`.
+
+![](documentation/longfunction.png 'Long Function')
 
 ### Advanced programming skills
 
-recursion
-state machine
-observer/pointer
+##### Recursion
+
+I needed to create a function that can convert letters inputted as coordinates when a player takes a shot, into an index for the coordinate on the x-axis. As the top line of the gameboard is labelled with letters, and the maximum size of a board can exceed the 26 characters in the alphabet, I needed to account for multicharacter inputs for values exceeding 26. In my implementation, I solved this by calculating the ASCII value of the second letter, then adding this to 26 multiplied by the return of the same function with the first letter.
+
+![](documentation/recursion.png 'Recursion')
+
+##### Pointers
+
+As mentioned, the structure of the objects in my codebase follow a tree structure. This means that objects needed to be properties of each other, some with many-to-many relationships. These should be pointers, as we do not want to assign the actual object, instead, the address of it in memory. This means we can ensure we are accessing the same object which we want to refer to, rather than a copy of that object. Pointers are essentially new variables that point to created data, rather than references that sits in the same memory location as the created data.
+
+![](documentation/pointer.png 'Pointers')
+
+##### Memory Management
+
+This however comes with data management issues, for example, we need to remember to free this memory when the data reaches the end of its life cycle. This is done with the `delete` keyword. This is used in the destructor of the parent class. If we do not do this, we can have memory leaks, where memory used by the program is never released back to the operating system once the program has ended. This is bad because it can reduce the amount of memory an operating system can use once the program is over.
+
+![](documentation/memmgmt.png 'Memory Management')
+
+##### Bitwise
+In my `Game` class, I needed to switch between two different indexes in a two-item vector. These indexes are `0` and `1`, so switching between them needed to be done without accidentally accessing the index of `-1` or `2`. For this, I used bitwise, a level of operations involving working with individual bits. I used the exclusive or `XOR` operator, `^` which essentially flips the bit which the number is stored as. This is a single bit, so would flip `0` to `1` and vice versa. This is perhaps the simplest operation a computer can do, which, although, doesn't have much effect in this game, on a larger scale can be highly efficient.
+
+![](documentation/bitwise.png ' Bitwise')
 
 ### Features Showcase
 
+In addition to the aforementioned:
+
+- Encapsulation though separated objects for distinct entities within the game.
+
 ### Improved targeted algorithm
 
-For this requirement, there were a few ways of implementing such a targeting algorithm. The first is a 'quick and dirty' algorithm that could essentially cheat, reading where the ships were and based on that information having a greater chance of hitting them. After all, there is no requirement for the AI to follow the rules - the end result makes no difference to the human player. In a way, this could be better as the chances of hitting a correct ship could be linearly scaled with the difficulty chosen by the player.
+I didn't have time to implement a fully-functional version of this algorithm, but there are a couple of ways in which I could have implemented it.
 
-I decided to implement the strategy that a human would deploy in a real game of battleship. I considered how a human plays - they guess randomly at first, then after hitting try the four squares around this to determine the direction of the ship. Then, the player tries shots along this determined direction until the ship is destroyed.
+The first is a 'quick and dirty' algorithm that could essentially cheat, reading where the ships were and based on that information having a greater chance of hitting them. After all, there is no requirement for the AI to follow the rules - the end result makes no difference to the human player. In a way, this could be better as the chances of hitting a correct ship could be linearly scaled with the difficulty chosen by the player.
+
+Alternatively, a strategy that a human would deploy in a real game of battleship could be implemented. Consider how a human plays - they guess randomly at first, then after hitting try the four squares around this to determine the direction of the ship. Then, the player tries shots along this determined axis until the ship is destroyed.
 
 ### Reflective review
 
