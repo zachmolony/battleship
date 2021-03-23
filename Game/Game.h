@@ -11,7 +11,7 @@ class Game {
   public:
     int oceanHeight;
     int oceanWidth;
-    int score[2] = {0, 0};
+    bool salvo = false;
     vector<vector<string>> boats;
     vector<Player *> players;
 
@@ -22,7 +22,7 @@ class Game {
     void setupGame(int humanPlayers, bool salvo, bool hiddenmines);
     void startGame();
     void readConfigData();
-    tuple <int, int>takeTurn(Player* player);
+    void takeTurn(Player* player, Player* opponent);
     string playGame();
 };
 

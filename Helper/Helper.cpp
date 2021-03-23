@@ -118,6 +118,34 @@ float getFloatInput(string prompt, long min = minimum, long max = maximum) {
   return number;
 }
 
+vector<tuple<int, int>> getSalvoCoords(string prompt, int xMax, int yMax, int shipsLeft) {
+  vector<tuple<int, int>> shots;
+  label:
+  while (1) {
+    string input = getInput(prompt, "[a-zA-Z]+,[0-9]+");
+
+    vector<string> coordsPairs = split(input, ' '); // todo bug here - pairs not high enough
+
+    if (coordsPairs.size() != shipsLeft) {
+      cout << coordsPairs.size() << shipsLeft << endl;
+      cout << "Invalid number of coordinates - try entering " << shipsLeft << " pairs of coordinates separated by spaces. " << endl;
+      continue;
+    }
+
+    for (int i = 0; i < shipsLeft; i++) {
+      vector<string> coords = split(input, ',');
+      int x = stoi(coords[1]);
+      int y = getIndexFromLetter(coords[0]);
+      if (x > xMax || y > yMax) {
+        cout << "Invalid coordinate, try again. " << endl;
+        goto label; // use this to restart the function
+      }
+      shots.push_back({ x, y });
+    }
+    return shots;
+  }
+}
+
 tuple<int, int> getValidCoords(string prompt, int xMax, int yMax) {
   while (1) {
     string input = getInput(prompt, "[a-zA-Z]+,[0-9]+");

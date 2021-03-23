@@ -6,6 +6,8 @@
 
 using namespace std;
 
+vector<tuple<int, int>> getSalvoCoords(string prompt, int xMax, int yMax, int shipsLeft);
+
 tuple<int, int> getValidCoords(string prompt, int xMax, int yMax);
 
 int randomInt(int max);
