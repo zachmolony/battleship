@@ -8,42 +8,44 @@
 
 using namespace std;
 
-Ocean::Ocean() {};
-
 Ocean::Ocean(int oceanWidth, int oceanHeight, string playerName) {
   this->oceanWidth = oceanWidth;
   this->oceanHeight = oceanHeight;
   this->playerName = playerName;
-
-  getGrid
+  this->oceanGrid = getGrid();
 }
 
 Ocean::~Ocean() {
-  for (const auto &row: oceanGrid) {
+  for (const auto &row: oceanGrid) { // delete pointers
     for (Square *sq: row){
       delete sq;
     }
   }
 }
 
-Ocean::resetGrid() {
-
+void Ocean::resetGrid() {
+  for (const auto &row: oceanGrid) { // delete pointers
+    for (Square *sq: row){
+      delete sq;
+    }
+  }
+  oceanGrid = getGrid(); // gen new grid
 }
 
-vector<vector<Square*>>& Ocean::getGrid() {
+vector<vector<Square*>> Ocean::getGrid() {
+  vector<vector<Square*>> grid;
   for (unsigned int i = 0; i < oceanWidth + 1; i++) {
     vector<Square*> row;
     for (unsigned int j = 0; j < oceanHeight + 1; j++) {
       row.emplace_back(new Square());
     }
-    oceanGrid.push_back(row);
+    grid.push_back(row);
   }
+  return grid;
 }
 
 void Ocean::showOcean() {
-  // cout << setw(oceanWidth) << '*' << endl;
   cout << "\n\n   " << this->playerName << "'s Board" << endl;
-  // cout << setw(oceanWidth) << '*' << endl;
   for (int x = 0; x < oceanWidth + 1; x++) { // for each row, format
     if (x == 0) { // numbering on right side
       cout << ' ' << ' ' << "|";

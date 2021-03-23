@@ -17,15 +17,14 @@ class Ocean {
     int oceanWidth;
     vector<vector<Square*>> oceanGrid;
 
-    Ocean(); // dummy constructor
     Ocean(int oceanWidth, int oceanHeight, string playerName); // Constructor that takes the ocean dimensions.
     ~Ocean();
-    vector<vector<Square*>> &getGrid();
 
 
-    bool placeShip(int x, int y, bool direction, int size, string name, Ship* ship);
-
+    vector<vector<Square*>> getGrid();
+    void resetGrid();
     void showOcean();
+    bool placeShip(int x, int y, bool direction, int size, string name, Ship* ship);
 };
 
 #endif // ADASHIP_OCEAN_H
