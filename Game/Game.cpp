@@ -7,6 +7,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 #include <sstream>
 #include <iterator>
 #include "Game.h"
@@ -87,7 +88,7 @@ void Game::setupGame(int humanPlayers, bool salvo, bool hiddenmines) {
     player->theOcean = new Ocean(this->oceanWidth, this->oceanHeight, playerName);
     this->players.push_back(player);
   }
-  for (int x = 0; x < humanPlayers % 2; x++) {
+  for (int x = 0; x < 2 - humanPlayers; x++) {
     string playerName = "CPU " + to_string(x + 1);
     Player *player = new Player(true, playerName);
     player->theOcean = new Ocean(this->oceanWidth, this->oceanHeight, playerName);
@@ -200,7 +201,7 @@ string Game::playGame() {
 
 void Game::startGame() {
   clearScreen();
-  cout << "Starting Game... " << endl << endl; // todo clear screen on turn
+  cout << "Starting Game... " << endl; // todo clear screen on turn
   for (int x = 0; x < this->players.size(); x++) {
     this->players[x]->placeShips(this->boats);
     newScreen();

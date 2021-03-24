@@ -52,7 +52,7 @@ void Player::placeShips(vector<vector<string>> ships) {
       clearScreen();
       goto label;
     }
-    if (option == "n" || option == "N") {
+    if (option == "y" || option == "Y") {
       cout << "\nAutoplacing Ships...\n";
       vector<vector<string>> remaining = vector<vector<string>>(ships.begin() + i, ships.end());
       autoPlaceShips(remaining);

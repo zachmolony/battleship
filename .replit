@@ -1,0 +1,2 @@
+language = "cpp"
+run = "g++ -pthread -std=c++17 main.cpp \"Game/Game.cpp\" \"Ocean/Ocean.cpp\" \"Square/Square.cpp\" \"Ship/Ship.cpp\" \"Player/Player.cpp\" \"Helper/Helper.cpp\" && ./a.out"

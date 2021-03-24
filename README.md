@@ -192,4 +192,4 @@ I also struggled with the memory management of C++ and the language's lack of tr
 
 ## Running the project
 
-`g++ -pthread -std=c++17 main.cpp "Game/Game.cpp" "Ocean/Ocean.cpp" "Square/Square.cpp" "Ship/Ship.cpp" "Player/Player.cpp" && ./a.out`
+`g++ -pthread -std=c++17 main.cpp "Game/Game.cpp" "Ocean/Ocean.cpp" "Square/Square.cpp" "Ship/Ship.cpp" "Player/Player.cpp" "Helper/Helper.cpp" && ./a.out`

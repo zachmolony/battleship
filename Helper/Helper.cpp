@@ -9,6 +9,7 @@
 #include <random>
 #include <chrono>
 #include <thread>
+#include <iomanip>
 
 using namespace std;
 
@@ -45,7 +46,12 @@ void clearScreen() {
 }
 
 void newScreen() {
-  system( "read -n 1 -s -p \"Press any key to continue...\"" );
+  // system( "read -n 1 -s -p \"Press any key to continue...\"" );
+  // this doesn't work on replit for whatever reason :( - I'll have to revert to getting a char which is super buggy and not user friendly
+
+  cout << "Press enter to continue...";
+  getchar();
+  cin.ignore(maximum, '\n');
   clearScreen();
 }
 
@@ -77,13 +83,13 @@ int getIndexFromLetter(string s) {
   return (getIndexFromLetter(firstLetter) * 26) + (char_array[1] - 'A' + 1);
 }
 
-vector<string> split(string toSplit, char delimiter) {
+vector<string> split(string toSplit, char delimiter) { // split up input based on given char delimiter
   stringstream ss(toSplit);
   string item;
   vector<string> separated;
   while (getline(ss, item, delimiter)) {
     separated.push_back(item);
-  }
+  } // add each to the vector
   return separated;
 }
 
