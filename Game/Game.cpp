@@ -161,8 +161,8 @@ void Game::takeSalvoTurn(Player* player, Player* opponent) {
 void Game::takeTurn(Player* player, Player* opponent) {
   // cpu player
   if (player->isComputer) {
-    int x = randomInt(oceanWidth) + 1;
-    int y = randomInt(oceanHeight) + 1;
+    int x = randomInt(oceanWidth - 1) + 1;
+    int y = randomInt(oceanHeight - 1) + 1;
     cout << "CPU Fires at " << x << y << endl;
     sleep(1);
     opponent->theOcean->oceanGrid[x][y]->handleTorpedo(opponent->name);
