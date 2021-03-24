@@ -74,7 +74,7 @@ Throughout the codebase, I adopted a number of good programming practices. For e
 
 ### Phase n Development
 
-For my developmental phases, I would write code for an epic in an isolated environment (replit) until it met the requirements which that epic needed to fill. Then I would conduct a code review and refactor my work, testing again manually for bugs and regressions. Then I would integrate it into the rest of my code base and conduct manual integration tests locally. During development, after implementing a basic version of a feature, I would leave a comment of `// todo: lorem ipsum` explaining what improvements should ideally be made before hand in. This meant that I could keep track of refactors and things which could be improved after the basic implementation is done.
+For my developmental phases, I would write code for an epic in an isolated environment (replit) until it met the requirements which that epic needed to fill. Then I would conduct a code review and refactor my work, testing again manually for bugs and regressions. Then I would integrate it into the rest of my code base and conduct manual integration tests locally. My commits detail the work I completed in that session. During development, after implementing a basic version of a feature, I would leave a comment of `// todo: lorem ipsum` explaining what improvements should ideally be made before hand in. This meant that I could keep track of refactors and things which could be improved after the basic implementation is done. These can be seen throughout my commits, indicating incomplete features, bugs which I spotted that need to be fixed, or general improvements/refactors which I could see improving the code base along the way. (some of these may still be there :)).
 
 ### Ensuring Quality
 
@@ -154,13 +154,27 @@ This however comes with data management issues, for example, we need to remember
 ##### Bitwise
 In my `Game` class, I needed to switch between two different indexes in a two-item vector. These indexes are `0` and `1`, so switching between them needed to be done without accidentally accessing the index of `-1` or `2`. For this, I used bitwise, a level of operations involving working with individual bits. I used the exclusive or `XOR` operator, `^` which essentially flips the bit which the number is stored as. This is a single bit, so would flip `0` to `1` and vice versa. This is perhaps the simplest operation a computer can do, which, although, doesn't have much effect in this game, on a larger scale can be highly efficient.
 
-![](documentation/bitwise.png ' Bitwise')
+![](documentation/bitwise.png 'Bitwise')
 
 ### Features Showcase
 
 In addition to the aforementioned:
 
 - Encapsulation though separated objects for distinct entities within the game.
+- Highly flexible function and method implementations.
+- Balanced randomiser using Mersenne Twister implementation.
+- Helper function file to ensure reuse and modularity.
+- Pointer connection of objects to ensure data synchronism.
+- Memory management through `delete` in destructors and reset functions.
+- Recursive implementations to reduce code repetition and improve efficiency.
+
+One of the smaller features that make my implementation great is my presentation. This is done with a title sequence, clearing the screen after each page, and extensive formatting. This ensures a strong user experience as it keeps the amount of data shown to the user at any time to a minimum. This makes the user have a much more enjoyable experience.
+
+![](documentation/ascii.png 'Title Screen')
+
+In addition to this, I used a clear and consistent file structure to separate code by their function. This ensures readability, testability and maintainability. I included named header files to reuse my code across my other files in the project.
+
+![](documentation/header.png 'Header Files')
 
 ### Improved targeted algorithm
 
@@ -168,13 +182,13 @@ I didn't have time to implement a fully-functional version of this algorithm, bu
 
 The first is a 'quick and dirty' algorithm that could essentially cheat, reading where the ships were and based on that information having a greater chance of hitting them. After all, there is no requirement for the AI to follow the rules - the end result makes no difference to the human player. In a way, this could be better as the chances of hitting a correct ship could be linearly scaled with the difficulty chosen by the player.
 
-Alternatively, a strategy that a human would deploy in a real game of battleship could be implemented. Consider how a human plays - they guess randomly at first, then after hitting try the four squares around this to determine the direction of the ship. Then, the player tries shots along this determined axis until the ship is destroyed.
+Alternatively, a strategy that a human would deploy in a real game of battleship could be implemented. Consider how you would play - they guess randomly at first, then after hitting try the four squares around the one you hit to determine the direction of the ship. Then, the try shots along this determined axis until the ship is destroyed. This would be implemented by simply adding one to the value of `x` or `y` generated on the previous shot.
 
 ### Reflective review
 
-My experience with programming is almost exclusively with front-end frameworks such as Vue and React. This was a challenge for me as the management of front end state and object-oriented design is quite different, and I was never sure of what the best practices and design patterns were for this style of coding. In the end, I think my data management similarly reflects the hierarchy of state in a modern frontend framework, which I'm not sure is the best method but worked for this program.
+My experience with programming is almost exclusively with front-end frameworks such as Vue and React. This was a challenge for me as the management of front end state and object-oriented design is quite different, and I was never sure of what the best practices and design patterns were for this style of coding. In the end, I think my data management similarly reflects the hierarchy of state in a modern frontend framework, although I'm not sure is the best method, albiet worked for this program.
 
-I also struggled with the memory management of C++ and the language's lack of traceability found in front end development, and descriptive error messages (looking at you, segmentation fault). However, this is something I got used to, and I began to appreciate the data-driven model of object-oriented programming.
+I also struggled with the memory management of C++ and the language's lack of traceability found in front end development, and descriptive error messages (looking at you, seg fault). However, this is something I got used to - I think it made me much more rigourous in making sure I understand every part of my code, rather than relying on developer tools and extensions. Furthermore, I began to appreciate the encapsulation and interfacing found in object-oriented programming, and rediscovered the joy of tinkering with the lower level aspects of a computer, which are seldom seen in modern web development.
 
 ## Running the project
 
